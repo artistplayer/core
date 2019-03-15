@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        Schema::defaultStringLength(255);
+
         // Custom Routing Methods
         $registrar = new \App\Routing\ResourceRegistrar($this->app['router']);
         $this->app->bind('Illuminate\Routing\ResourceRegistrar', function () use ($registrar) {
