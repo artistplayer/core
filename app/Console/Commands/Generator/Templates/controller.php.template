@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\{{model}};
+use App\Http\Resources\{{model}}Resource;
+use Illuminate\Http\Request;
+
+class {{model}}Controller extends Controller
+{
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Exception
+     */
+    public function search(Request $request)
+    {
+        $this->authorize('search', {{model}}::class);
+        $wheres = $request->get('wheres', []);
+        $result = {{model}}::search($wheres);
+        if($with = $request->get('with', [])){
+            $with = !is_array($with) ? explode(",", $with) : $with;
+            $result->with($with);
+        }
+
+        $order = $request->query->get('order', 'asc');
+        $sort = strtolower($request->query->get('sort', 'id'));
+        $limit = $request->query->get('limit', 100) ?: 100;
+        if($limit > 100){
+            $limit = 100;
+        }
+
+        $collection = $result->orderBy($sort, $order)->paginate($limit)->appends($request->query->all());
+        return {{model}}Resource::collection($collection);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws \Exception
+     */
+    public function index(Request $request)
+    {
+        $this->authorize('index', {{model}}::class);
+
+        $order = $request->query->get('order', 'asc');
+        $sort = strtolower($request->query->get('sort', 'id'));
+        $limit = $request->query->get('limit', 100) ?: 100;
+        if($limit > 100){
+            $limit = 100;
+        }
+
+        if($with = $request->get('with', [])){
+            $with = !is_array($with) ? explode(",", $with) : $with;
+            foreach ($with as $w) {
+                if (!method_exists({{model}}::class, $w)) {
+                    abort(400, 'Requested relation ['.$w.'] does not exist!');
+                }
+            }
+            $collection = {{model}}::with($with)->orderBy($sort, $order)->paginate($limit)->appends($request->query->all());
+        } else {
+            $collection = {{model}}::orderBy($sort, $order)->paginate($limit)->appends($request->query->all());
+        }
+
+        return {{model}}Resource::collection($collection);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return {{model}}Resource
+     * @throws \Exception
+     */
+    public function store(Request $request)
+    {
+        $this->authorize('store', {{model}}::class);
+        $data = $this->validate($request, {{insertValidation}});
+        $data = $this->getData($request, $data);
+
+        $model = {{model}}::create($data);
+
+        {{insertResource}}
+
+        return new {{model}}Resource($model);
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Request $request
+     * @param  int $modelId
+     * @return {{model}}Resource
+     * @throws \Exception
+     */
+    public function show(Request $request, ?int $modelId)
+    {
+        if($with = $request->get('with', [])){
+            $with = !is_array($with) ? explode(",", $with) : $with;
+            foreach ($with as $w) {
+                if (!method_exists({{model}}::class, $w)) {
+                    abort(400, 'Requested relation ['.$w.'] does not exist!');
+                }
+            }
+            $model = {{model}}::with($with)->findOrFail($modelId);
+        } else {
+            $model = {{model}}::findOrFail($modelId);
+        }
+
+        $this->authorize('show', $model);
+        return new {{model}}Resource($model);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param int $modelId
+     * @return {{model}}Resource
+     * @throws \Exception
+     */
+    public function update(Request $request, ?int $modelId)
+    {
+        $model = {{model}}::findOrFail($modelId);
+        $this->authorize('update', $model);
+        $data = $this->validate($request, {{updateValidation}});
+        $data = $this->getData($request, $data);
+
+
+        $model->update($data);
+
+        {{updateResource}}
+
+        return new {{model}}Resource($model);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param int $modelId
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function destroy(Request $request, ?int $modelId)
+    {
+        $model = {{model}}::findOrFail($modelId);
+        $this->authorize('delete', $model);
+        $model->delete();
+
+        {{deleteResource}}
+
+        return response()->json([], 204);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param array $data
+     * @return array
+     */
+    private function getData(Request $request, array $data)
+    {
+        {{processResource}}
+
+        {{cleanData}}
+
+        return $data;
+    }
+}

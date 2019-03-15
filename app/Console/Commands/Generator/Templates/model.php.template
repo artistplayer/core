@@ -1,0 +1,26 @@
+<?php
+namespace App;
+
+use App\Traits\PageScope;
+use App\Traits\SearchScope;
+use Illuminate\Database\Eloquent\{{type}} as ExtendedClass;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class {{model}} extends ExtendedClass
+{
+    use SearchScope{{softDeletes}};
+
+
+    protected $visible = [];
+    protected $hidden = [{{hidden}}];
+
+    protected $guarded = [{{guarded}}];
+    protected $fillable = [];
+    protected $casts = [{{casts}}];
+
+
+    {{relations}}
+
+
+    {{reverseRelations}}
+}
