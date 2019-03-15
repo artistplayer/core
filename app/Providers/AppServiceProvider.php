@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        Schema::defaultStringLength(255);
+        Schema::defaultStringLength(191);
 
         // Custom Routing Methods
         $registrar = new \App\Routing\ResourceRegistrar($this->app['router']);
