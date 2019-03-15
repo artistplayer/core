@@ -88,7 +88,7 @@ class Migration extends Generator
                     break;
                 case "one_to_one":
                 case "one_to_many":
-                    $migration .= "\t\t\t\$table->foreign('" . $relation['reference'] . "_id')->references('id')->on('" . $relation['reference'] . "s');" . PHP_EOL;
+                    $migration .= "\t\t\t\$table->foreign('" . $relation['reference'] . "_id')->references('id')->on('" . $relation['reference'] . "s')->onDelete('cascade');" . PHP_EOL;
                     break;
             }
         }
