@@ -1,7 +1,7 @@
 {
   "name": "artistplayer/core",
   "type": "project",
-  "description": "The Laravel Framework.",
+  "description": "Artistplayer Core API",
   "keywords": [
     "framework",
     "laravel"
