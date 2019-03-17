@@ -4,8 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "387ce8d9ede675eec9dfe00d9e995585",
+    "content-hash": "8578391df28a2d6597adc5291aa241e5",
     "packages": [
+        {
+            "name": "artistplayer/app",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artistplayer/app.git",
+                "reference": "82a7e9140d15bbc6eeefd7364da77dd8d71f6159"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artistplayer/app/zipball/82a7e9140d15bbc6eeefd7364da77dd8d71f6159",
+                "reference": "82a7e9140d15bbc6eeefd7364da77dd8d71f6159",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ArtistPlayer",
+                    "email": "info@artistplayer.nl"
+                }
+            ],
+            "time": "2019-03-17T15:39:08+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "1.2.0",
@@ -5258,7 +5285,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "artistplayer/app": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
