@@ -103,15 +103,15 @@ class File extends Schema
                 abort(400, "The file you requested cannot be found!");
             }
             $media_content = file_get_contents($file);
-            $integrety_hash = md5($media_content);
-            if (\App\File::where('integrity_hash', $integrety_hash)->first()) {
+            $integrity_hash = md5($media_content);
+            if (\App\File::where('integrity_hash', $integrity_hash)->first()) {
                 abort(400, 'File already imported!');
             }
             try {
                 ini_set('memory_limit', '512M');
                 $getID3 = new \getID3();
                 $info = $getID3->analyze($file);
-                $data['integrity_hash'] = $integrety_hash;
+                $data['integrity_hash'] = $integrity_hash;
                 $data['filesize'] = $info['filesize'];
                 $data['format'] = $info['fileformat'];
                 $data['mime_type'] = $info['mime_type'];
@@ -120,12 +120,12 @@ class File extends Schema
                 $data['filename'] = $info['filename'];
 
                 // Save Media File
-                \Storage::disk('local')->put('public/' . $integrety_hash . '/media.' . $data['format'], $media_content);
+                \Storage::disk('local')->put('public/' . $integrity_hash . '/media.' . $data['format'], $media_content);
 
                 // Save Thumbnail
                 if ($image = $this->encodeImage($info)) {
                     $content = explode('base64,', $image);
-                    \Storage::disk('local')->put('public/' . $integrety_hash . '/image.jpg', base64_decode(trim($content[1])));
+                    \Storage::disk('local')->put('public/' . $integrity_hash . '/image.jpg', base64_decode(trim($content[1])));
                     $data['thumbnail'] = true;
                 }
             } catch (\Exception $exception) {
@@ -136,12 +136,16 @@ class File extends Schema
 
     public function deleteResource(\Illuminate\Http\Request &$request, &$model): void
     {
-        \Storage::disk('local')->deleteDirectory('public/' . $model->integrety_hash);
+        \Storage::disk('local')->deleteDirectory('public/' . $model->integrity_hash);
     }
 
 
     public function resourceResponse(\Illuminate\Http\Request &$request, Model &$model, array &$response): void
     {
+
+        if ($response['thumbnail']) {
+            $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
+        }
     }
 
     public function processPivot(\Illuminate\Http\Request &$request, array &$data): void

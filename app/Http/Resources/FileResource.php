@@ -20,6 +20,9 @@ class FileResource extends JsonResource
             unset($response['pivot']['playlist_id'],$response['pivot']['file_id']);
         }
         $__schema = new \App\Console\Commands\Generator\Schemas\File();
+        if ($response['thumbnail']) {
+            $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
+        }
         return $response;
     }
     public function with($request)
