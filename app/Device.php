@@ -13,7 +13,7 @@ class Device extends Model
     protected $casts = [
         "id" => "string",
         "label" => "string",
-        "size" => "integer",
+        "size" => "double",
         "location" => "string"
     ];
 

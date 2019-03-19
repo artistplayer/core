@@ -143,7 +143,7 @@ class File extends Schema
     public function resourceResponse(\Illuminate\Http\Request &$request, Model &$model, array &$response): void
     {
 
-        if ($response['thumbnail']) {
+        if (isset($response['thumbnail'])) {
             $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
         }
     }

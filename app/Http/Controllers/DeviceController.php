@@ -14,15 +14,30 @@ class DeviceController extends Controller
 
     public function __construct()
     {
-        $this->devices = new Collection([
-            Device::create([
-                "id" => md5("/Users/maikeltenvoorde/Banden"),
-                "label" => "USB MAIKEL",
-                "size" => 15964184072,
-                "location" => "/Users/maikeltenvoorde/Banden"
-            ])
-        ]);
+        $this->devices = new Collection();
 
+
+        exec("lsblk -o label,mountpoint", $drives);
+        $drives = array_filter($drives, function ($drive) {
+            return stripos($drive, '/media');
+        });
+
+        $drives = array_map(function ($drive) {
+            $drive = str_replace("  ", " ", $drive);
+            return explode(" ", $drive);
+        }, $drives);
+
+        foreach ($drives as $drive) {
+            $list = scandir($drive[1]);
+            if (count($list) > 2) {
+                $this->devices->add(Device::create([
+                    "id" => md5($drive[1]),
+                    "label" => $drive[0],
+                    "size" => exec("findmnt -bno size " . $drive[1]),
+                    "location" => $drive[1]
+                ]));
+            }
+        }
     }
 
 
@@ -64,6 +79,7 @@ class DeviceController extends Controller
 
     private function readDir($directory)
     {
+        $extensions = ['3gp', 'aa', 'aac', 'aax', 'act', 'aiff', 'amr', 'ape', 'au', 'awb', 'dct', 'dss', 'dvf', 'flac', 'gsm', 'iklax', 'ivs', 'm4a', 'm4b', 'm4p', 'mmf', 'mp3', 'mpc', 'msv', 'nmf', 'nsf', 'ogg', 'oga', 'mogg', 'opus', 'ra', 'rm', 'raw', 'sln', 'tta', 'vox', 'wav', 'wma', 'wv', 'webm', '8svx'];
         $response = [];
         $dir = @scandir($directory);
         $dir = array_filter($dir, function ($file) {
@@ -74,13 +90,18 @@ class DeviceController extends Controller
                 $response = array_merge($response, $this->readDir($directory . '/' . $file));
                 continue;
             }
-            $fullpath = $directory . '/' . $file;
-            $response[] = [
-                'integrity_hash' => md5($fullpath),
-                'filepath' => $directory,
-                'filename' => $file,
-                'filesize' => filesize($fullpath)
-            ];
+
+            $extension = explode(".", strtolower($file));
+            $extension = end($extension);
+            if (in_array($extension, $extensions)) {
+                $fullpath = $directory . '/' . $file;
+                $response[] = [
+                    'integrity_hash' => md5($fullpath),
+                    'filepath' => $directory,
+                    'filename' => $file,
+                    'filesize' => filesize($fullpath)
+                ];
+            }
         }
         return $response;
     }
