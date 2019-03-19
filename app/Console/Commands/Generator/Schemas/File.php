@@ -66,6 +66,16 @@ class File extends Schema
             "type" => "double",
             "length" => 15,
             "places" => 6
+        ],
+        "trimAtStart" => [
+            "type" => "double",
+            "length" => 15,
+            "places" => 6
+        ],
+        "trimAtEnd" => [
+            "type" => "double",
+            "length" => 15,
+            "places" => 6
         ]
     ];
     public $relations = [
