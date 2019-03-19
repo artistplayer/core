@@ -17,8 +17,8 @@ class Controller extends Generator
         $updateValidation = [];
         $cleanData = [];
         foreach ($this->schema->properties as $property => $options) {
-            $insertValidation[] = "\t\t\t'" . $property . "' => '" . $this->getType($options['type']) . (!empty($options['required']) ? ':required' : '') . "',";
-            $updateValidation[] = "\t\t\t'" . $property . "' => '" . $this->getType($options['type']) . "',";
+            $insertValidation[] = "\t\t\t'" . $property . "' => '" . $this->getValidator($options['type']) . (!empty($options['required']) ? ':required' : '') . "',";
+            $updateValidation[] = "\t\t\t'" . $property . "' => '" . $this->getValidator($options['type']) . "',";
 
             if (isset($options['save']) && !$options['save']) {
                 $cleanData[] = "\t\tunset(\$data['" . $property . "']);";

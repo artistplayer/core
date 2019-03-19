@@ -98,7 +98,7 @@ abstract class Generator
             return null;
         }
         $method = new \ReflectionMethod($this->schema, $hook);
-        if ($method->class ===Schema::class) {
+        if ($method->class === Schema::class) {
             return null;
         }
 
@@ -131,6 +131,27 @@ abstract class Generator
         });
         $keys = array_keys($types);
         return reset($keys);
+    }
+
+    protected function getValidator($type)
+    {
+        switch ($this->getType($type)) {
+            case "float":
+            case "double":
+            case "decimal":
+            case "timestamp":
+                return 'numeric';
+            case "object":
+            case "collection":
+                return 'array';
+            case "real":
+            case "datetime":
+            case "datetime:Y":
+            case "datetime:H:i:s":
+                return 'string';
+            default:
+                return $this->getType($type);
+        }
     }
 
 

@@ -75,9 +75,9 @@ class FileController extends Controller
 			'thumbnail' => 'boolean',
 			'mime_type' => 'string',
 			'bitrate' => 'integer',
-			'playtime' => 'double',
-			'trimAtStart' => 'double',
-			'trimAtEnd' => 'double',
+			'playtime' => 'numeric',
+			'trimAtStart' => 'numeric',
+			'trimAtEnd' => 'numeric',
 		]);
         $data = $this->getData($request, $data);
         $model = File::create($data);
@@ -129,9 +129,9 @@ class FileController extends Controller
 			'thumbnail' => 'boolean',
 			'mime_type' => 'string',
 			'bitrate' => 'integer',
-			'playtime' => 'double',
-			'trimAtStart' => 'double',
-			'trimAtEnd' => 'double',
+			'playtime' => 'numeric',
+			'trimAtStart' => 'numeric',
+			'trimAtEnd' => 'numeric',
 		]);
         $data = $this->getData($request, $data);
         $model->update($data);
