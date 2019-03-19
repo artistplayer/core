@@ -186,7 +186,7 @@ class FileController extends Controller
                     $data['thumbnail'] = true;
                 }
             } catch (\Exception $exception) {
-                abort(500, "Not able to analize the requested file! (" . $exception->getMessage() . ")");
+                abort(500, "Not able to analyse the requested file! (" . $exception->getMessage() . ")");
             }
         }
 		unset($data['filepath']);

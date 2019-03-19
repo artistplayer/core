@@ -129,7 +129,7 @@ class File extends Schema
                     $data['thumbnail'] = true;
                 }
             } catch (\Exception $exception) {
-                abort(500, "Not able to analize the requested file! (" . $exception->getMessage() . ")");
+                abort(500, "Not able to analyse the requested file! (" . $exception->getMessage() . ")");
             }
         }
     }
@@ -143,6 +143,7 @@ class File extends Schema
     public function resourceResponse(\Illuminate\Http\Request &$request, Model &$model, array &$response): void
     {
 
+        $response['url'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/media.' . $model->format));
         if (isset($response['thumbnail'])) {
             $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
         }
