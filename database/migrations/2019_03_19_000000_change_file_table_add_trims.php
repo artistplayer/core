@@ -14,8 +14,8 @@ class ChangeFileTableAddTrims extends Migration
     public function up()
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->double('trimAtStart', 15, 6)->default(null);
-            $table->double('trimAtEnd', 15, 6)->default(null);
+            $table->double('trimAtStart', 15, 6)->default(0);
+            $table->double('trimAtEnd', 15, 6)->default(0);
         });
     }
 
