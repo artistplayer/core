@@ -181,6 +181,7 @@ class FileController extends Controller
                 $data['bitrate'] = $info['bitrate'];
                 $data['playtime'] = $info['playtime_seconds'];
                 $data['filename'] = $info['filename'];
+                $data['thumbnail'] = false;
                 // Save Media File
                 \Storage::disk('local')->put('public/' . $integrity_hash . '/media.' . $data['format'], $media_content);
                 // Save Thumbnail
