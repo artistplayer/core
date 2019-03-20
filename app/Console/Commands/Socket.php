@@ -59,12 +59,12 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         $msg = json_decode($msg);
         switch (true) {
             case $msg->channel === 'omx':
-                if (!$msg->method) {
+                if (!isset($msg->method)) {
                     return $from->send(json_encode([
                         'Method not defined!'
                     ]));
                 }
-                if (!$msg->property) {
+                if (!isset($msg->property)) {
                     return $from->send(json_encode([
                         'Property not defined!'
                     ]));
