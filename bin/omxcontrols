@@ -42,7 +42,7 @@ case $1 in
 	set)
 		case $2 in
 			play)
-				exec `omxplayer $3 --pos $4 --vol -0 --amp 0` & >/dev/null
+				omxplayer $3 --pos $4 --vol 0 --amp 0 > /dev/null 2>&1
 				exit
 				;;
 			pause)

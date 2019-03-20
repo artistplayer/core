@@ -46,11 +46,11 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         exec("bin/omxcontrols get status", $status);
 
         $conn->send(json_encode([
-            'position' => $position,
-            'duration' => $duration,
-            'volume' => $volume,
-            'source' => $source,
-            'status' => $status
+            'position' => join(PHP_EOL, $position),
+            'duration' => join(PHP_EOL, $duration),
+            'volume' => join(PHP_EOL, $volume),
+            'source' => join(PHP_EOL, $source),
+            'status' => join(PHP_EOL, $status)
         ]));
     }
 
