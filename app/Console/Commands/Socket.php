@@ -59,34 +59,36 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     function onMessage(\Ratchet\ConnectionInterface $from, $msg)
     {
-        $msg = json_decode($msg);
-        switch (true) {
-            case $msg->channel === 'omx':
-                if (!isset($msg->method)) {
-                    return $from->send(json_encode([
-                        'Method not defined!'
+        try {
+            $msg = json_decode($msg);
+            switch (true) {
+                case isset($msg->channel) && $msg->channel === 'omx':
+                    if (!isset($msg->method)) {
+                        return $from->send(json_encode([
+                            'Method not defined!'
+                        ]));
+                    }
+                    if (!isset($msg->property)) {
+                        return $from->send(json_encode([
+                            'Property not defined!'
+                        ]));
+                    }
+                    exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null), $response);
+                    if ($response) {
+                        return $from->send(json_encode([
+                            $response
+                        ]));
+                    }
+                    break;
+                case isset($msg->channel) && $msg->channel === 'spotify':
+                    $from->send(json_encode([
+                        'Not implemented yet!'
                     ]));
-                }
-                if (!isset($msg->property)) {
-                    return $from->send(json_encode([
-                        'Property not defined!'
-                    ]));
-                }
-                exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null), $response);
-                if ($response) {
-                    return $from->send(json_encode([
-                        $response
-                    ]));
-                }
-                break;
-            case $msg->channel === 'spotify':
-                $from->send(json_encode([
-                    'Not implemented yet!'
-                ]));
-                break;
+                    break;
+            }
+        } catch (\Exception $e) {
+            echo $e->getMessage();
         }
-
-
     }
 
     function onClose(\Ratchet\ConnectionInterface $conn)
