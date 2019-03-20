@@ -25,6 +25,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     public function handle()
     {
+        exec("chmod 0777 bin -Rf");
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
