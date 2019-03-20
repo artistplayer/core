@@ -44,11 +44,45 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         exec("bin/omxcontrols get source", $source);
         exec("bin/omxcontrols get status", $status);
 
-        var_dump($position);
-        var_dump($duration);
-        var_dump($volume);
-        var_dump($source);
-        var_dump($status);
+        $conn->send(json_encode([
+            'position' => $position,
+            'duration' => $duration,
+            'volume' => $volume,
+            'source' => $source,
+            'status' => $status
+        ]));
+    }
+
+    function onMessage(\Ratchet\ConnectionInterface $from, $msg)
+    {
+        $msg = json_decode($msg);
+        switch (true) {
+            case $msg->channel === 'omx':
+                if (!$msg->method) {
+                    return $from->send(json_encode([
+                        'Method not defined!'
+                    ]));
+                }
+                if (!$msg->property) {
+                    return $from->send(json_encode([
+                        'Property not defined!'
+                    ]));
+                }
+                exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null), $response);
+                if ($response) {
+                    return $from->send(json_encode([
+                        $response
+                    ]));
+                }
+                break;
+            case $msg->channel === 'spotify':
+                $from->send(json_encode([
+                    'Not implemented yet!'
+                ]));
+                break;
+        }
+
+
     }
 
     function onClose(\Ratchet\ConnectionInterface $conn)
@@ -60,14 +94,5 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     {
         // TODO: Implement onError() method.
     }
-
-    function onMessage(\Ratchet\ConnectionInterface $from, $msg)
-    {
-        $msg = json_decode($msg);
-
-
-        // TODO: Implement onMessage() method.
-    }
-
 
 }

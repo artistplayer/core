@@ -35,6 +35,7 @@ case $1 in
 				playstatus=`dbus-send --print-reply=literal --session --reply-timeout=500 --dest=org.mpris.MediaPlayer2.omxplayer /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"PlaybackStatus"`
 				[ $? -ne 0 ] && exit 1
 				echo "$(sed 's/^ *//;s/ *$//;' <<< "$playstatus")"
+			    exit
 				;;
 		esac
 		;;
@@ -67,7 +68,6 @@ case $1 in
 		esac
 		;;
 esac
-
 
 echo "
 Usage:
