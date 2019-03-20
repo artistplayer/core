@@ -38,7 +38,17 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     function onOpen(\Ratchet\ConnectionInterface $conn)
     {
-        // TODO: Implement onOpen() method.
+        exec("bin/omxcontrols get position", $position);
+        exec("bin/omxcontrols get duration", $duration);
+        exec("bin/omxcontrols get volume", $volume);
+        exec("bin/omxcontrols get source", $source);
+        exec("bin/omxcontrols get status", $status);
+
+        var_dump($position);
+        var_dump($duration);
+        var_dump($volume);
+        var_dump($source);
+        var_dump($status);
     }
 
     function onClose(\Ratchet\ConnectionInterface $conn)
@@ -53,6 +63,9 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     function onMessage(\Ratchet\ConnectionInterface $from, $msg)
     {
+        $msg = json_decode($msg);
+
+
         // TODO: Implement onMessage() method.
     }
 
