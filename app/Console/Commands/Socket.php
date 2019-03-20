@@ -73,7 +73,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                             'Property not defined!'
                         ]));
                     }
-                    exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null), $response);
+                    exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
                     if ($response) {
                         return $from->send(json_encode([
                             $response
