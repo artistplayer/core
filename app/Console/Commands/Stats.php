@@ -49,6 +49,8 @@ class Stats extends \Illuminate\Console\Command
         $muted = false;
 
 
+        var_dump($status);
+
         if ($source) {
             $integrity_hash = explode("/media", join(PHP_EOL, $source));
             $integrity_hash = explode("/", $integrity_hash[0]);
