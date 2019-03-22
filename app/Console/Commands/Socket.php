@@ -77,7 +77,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                             ]));
                         }
                         $file = File::find($msg->value->file);
-                        $msg->value = \Storage::disk('local')->url('public/' . $file->integrity_hash . '/media.' . $file->format);
+                        $msg->value = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
                         if ($file->trimAtStart) {
                             $msg->value .= " " . $file->trimAtStart;
                         }
