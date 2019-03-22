@@ -77,7 +77,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
             }
 
             foreach ($this->connections as $k => $connection) {
-                $connection->send(json_encode($msg));
+                $connection->send(Stats::update());
             }
 
 
