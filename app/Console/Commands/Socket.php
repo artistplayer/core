@@ -52,6 +52,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         $this->connections[] = $conn;
 
         foreach ($this->channels as $channel) {
+            $channel->update();
             $conn->send($channel);
         }
     }
@@ -126,8 +127,6 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                 }
             }
             call_user_func_array([$channel, $msg->property], $parameters);
-            $channel->update();
-
             return $channel;
         }
         return false;
