@@ -26,20 +26,12 @@ class OMXPlayer
         $this->properties['muted'] = false;
         $this->properties['playlist'] = 1;
 
-
-        if ($this->properties['source']) {
+        if (isset($this->properties['source'])) {
             $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
             $integrity_hash = explode("/", $integrity_hash[0]);
             $integrity_hash = end($integrity_hash);
             $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
             $this->properties['file'] = $file->id;
-
-//            if (!isset($this->properties['position'])) {
-//                $this->properties['position'] = $file->trimAtStart * 10000000;
-//            }
-//            if (!isset($this->properties['duration'])) {
-//                $this->properties['duration'] = $file->playtime * 10000000;
-//            }
         }
     }
 
