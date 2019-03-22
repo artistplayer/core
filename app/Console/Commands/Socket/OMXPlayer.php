@@ -34,12 +34,12 @@ class OMXPlayer
             $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
             $this->properties['file'] = $file->id;
 
-            if (!isset($this->properties['position'])) {
-                $this->properties['position'] = $file->trimAtStart * 10000000;
-            }
-            if (!isset($this->properties['duration'])) {
-                $this->properties['duration'] = $file->playtime * 10000000;
-            }
+//            if (!isset($this->properties['position'])) {
+//                $this->properties['position'] = $file->trimAtStart * 10000000;
+//            }
+//            if (!isset($this->properties['duration'])) {
+//                $this->properties['duration'] = $file->playtime * 10000000;
+//            }
         }
     }
 
