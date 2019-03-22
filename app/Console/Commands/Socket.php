@@ -26,10 +26,16 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     private $connections = [];
 
+    private $channels = [];
+
 
     public function handle()
     {
         exec("chmod 0777 bin -Rf");
+
+        $this->channels[] = new OMXPlayer();
+
+
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
@@ -44,7 +50,10 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     function onOpen(\Ratchet\ConnectionInterface $conn)
     {
         $this->connections[] = $conn;
-        $conn->send(Stats::update());
+
+        foreach ($this->channels as $channel) {
+            $conn->send($channel);
+        }
     }
 
     function onMessage(\Ratchet\ConnectionInterface $from, $msg)
@@ -52,7 +61,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         try {
             if ($response = $this->process(json_decode($msg))) {
                 foreach ($this->connections as $k => $connection) {
-                    $connection->send(json_encode($response));
+                    $connection->send($response);
                 }
             }
         } catch (\Exception $e) {
@@ -83,27 +92,34 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     private function process($msg)
     {
         if (isset($msg->channel)) {
-            $channels = [
-                'omx' => OMXPlayer::class,
-//                'spotify' => Spotify::class
-            ];
-            if (!key_exists($msg->channel, $channels)) {
+            if (!key_exists($msg->channel, $this->channels)) {
                 throw new \Exception('Channel not exists!');
             }
             if (!isset($msg->method)) {
                 throw new \Exception('Method not defined!');
             }
-            $channel = $channels[$msg->channel];
-            if ($msg->method === 'get') {
-                return $channel::$$msg->property;
+            $channel = $this->channels[$msg->channel];
+            if (!isset($channel->properties)) {
+                throw new \Exception("Channel is invalid! 'Properties' property are missing!");
             }
+
+            if ($msg->method === 'get') {
+                if (!isset($channel->properties[$msg->property])) {
+                    throw new \Exception('Property not found!');
+                }
+                return $channel->properties[$msg->property];
+            }
+
 
             if (!method_exists($channel, $msg->property)) {
                 throw new \Exception('Method ' . $channel . '::[' . $msg->property . ']() not exists!');
             }
-            call_user_func_array($channel . '::' . $msg->property, isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : []);
-            return $channel::$properties;
+
+            $parameters = isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : [];
+            $channel->{$msg->property}($parameters);
+            return $channel;
         }
+        return false;
     }
 
 }

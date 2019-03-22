@@ -6,105 +6,88 @@ use App\File;
 
 class OMXPlayer
 {
-    static $properties = [
-        'volume' => null,
+    public $properties = [
+        'volume' => 100,
         'source' => null,
-        'status' => null,
-        'position' => null,
-        'duration' => null
+        'status' => 'Paused',
+        'position' => 0,
+        'duration' => 0
     ];
 
-
-    public function __get($name)
+    public function __construct()
     {
-        if (is_null(static::$properties[$name])) {
-            static::$properties[$name] = self::execute("get", $name);
+        foreach (['volume', 'source', 'status', 'position', 'duration'] as $property) {
+            if ($value = $this->execute('get', $property)) {
+                $this->properties[$property] = $value;
+            }
+        }
+
+        $this->properties['mode'] = 'normal';
+        $this->properties['muted'] = false;
+        $this->properties['playlist'] = 1;
+
+
+        if ($this->properties['source']) {
+            $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
+            $integrity_hash = explode("/", $integrity_hash[0]);
+            $integrity_hash = end($integrity_hash);
+            $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
+            $this->properties['file'] = $file->id;
+            $this->properties['position'] = $file->trimAtStart * 1000000;
+            $this->properties['duration'] = $file->playTime * 1000000;
         }
     }
 
 
-    static function play($fileId)
+    public function play($fileId, $playlistId)
     {
         $file = File::find($fileId);
         $source = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
-        self::execute("set", "play", $source . ' ' . $file->trimAtStart);
-        static::$properties['position'] = $file->trimAtStart * 1000000;
-        static::$properties['duration'] = $file->playTime * 1000000;
-        static::$properties['source'] = $source;
-        static::$properties['status'] = 'Playing';
+        $this->execute("set", "play", $source . ' ' . $file->trimAtStart);
+
+        $this->properties['file'] = $fileId;
+        $this->properties['playlist'] = $playlistId;
+        $this->properties['duration'] = $file->playTime * 1000000;
+        $this->properties['duration'] = $file->playTime * 1000000;
+        $this->properties['source'] = $source;
+        $this->properties['status'] = 'Playing';
     }
 
-    static function pause()
+    public function pause()
     {
-        self::execute("set", "pause");
-        static::$properties['status'] = static::$properties['status'] === 'Paused' ? 'Playing' : 'Paused';
+        $this->execute("set", "pause");
+        $this->properties['status'] = $this->properties['status'] === 'Paused' ? 'Playing' : 'Paused';
     }
 
-    static function stop()
+    public function stop()
     {
-        self::execute("set", "stop");
-        static::$properties['status'] = 'Paused';
+        $this->execute("set", "stop");
+        $this->properties['status'] = 'Paused';
     }
 
-    static function position($position)
+    public function position($position)
     {
-        self::execute("set", "position", $position);
-        static::$properties['position'] = $position;
+        $this->execute("set", "position", $position);
+        $this->properties['position'] = $position;
     }
 
-    static function volume($volume)
+    public function volume($volume)
     {
-        self::execute("set", "volume", $volume);
-        static::$properties['volume'] = $volume;
+        $this->execute("set", "volume", $volume);
+        $this->properties['volume'] = $volume;
     }
 
-
-    static private function execute($method, $property, $value = '')
+    private function execute($method, $property, $value = '')
     {
         $cmd = "bin/omxcontrols " . $method . " " . $property . " " . $value . ($method === 'set' ? " > /dev/null 2>&1" : "");
-        echo $cmd;
-        exec($cmd, $response);
+        @exec($cmd, $response);
         return $response;
     }
+
+
+    public function __toString()
+    {
+        return json_encode($this->properties);
+    }
+
 }
-
-
-
-//if (!isset($msg->method)) {
-//    return $from->send(json_encode([
-//        'Method not defined!'
-//    ]));
-//}
-//if (!isset($msg->property)) {
-//    return $from->send(json_encode([
-//        'Property not defined!'
-//    ]));
-//}
-//
-//
-//if ($msg->property === 'play') {
-//    if (!isset($msg->value)) {
-//        return $from->send(json_encode([
-//            'Value not defined!'
-//        ]));
-//    }
-//    if (!isset($msg->value->file)) {
-//        return $from->send(json_encode([
-//            'File in value not defined!'
-//        ]));
-//    }
-//    $file = File::find($msg->value->file);
-//    $msg->value = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
-//    if ($file->trimAtStart) {
-//        $msg->value .= " " . $file->trimAtStart;
-//    }
-//}
-//
-//
-//echo "bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : "");
-//exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
-//if ($response) {
-//    $from->send(json_encode([
-//        $response
-//    ]));
-//}
