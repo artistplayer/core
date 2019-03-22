@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\File;
+use App\Console\Commands\Socket\OMXPlayer;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -50,61 +50,11 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     function onMessage(\Ratchet\ConnectionInterface $from, $msg)
     {
         try {
-            $msg = json_decode($msg);
-            switch (true) {
-                case isset($msg->channel) && $msg->channel === 'omx':
-                    if (!isset($msg->method)) {
-                        return $from->send(json_encode([
-                            'Method not defined!'
-                        ]));
-                    }
-                    if (!isset($msg->property)) {
-                        return $from->send(json_encode([
-                            'Property not defined!'
-                        ]));
-                    }
-
-
-                    if ($msg->property === 'play') {
-                        if (!isset($msg->value)) {
-                            return $from->send(json_encode([
-                                'Value not defined!'
-                            ]));
-                        }
-                        if (!isset($msg->value->file)) {
-                            return $from->send(json_encode([
-                                'File in value not defined!'
-                            ]));
-                        }
-                        $file = File::find($msg->value->file);
-                        $msg->value = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
-                        if ($file->trimAtStart) {
-                            $msg->value .= " " . $file->trimAtStart;
-                        }
-                    }
-
-
-                    echo "bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : "");
-                    exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
-                    if ($response) {
-                        $from->send(json_encode([
-                            $response
-                        ]));
-                    }
-                    break;
-                case isset($msg->channel) && $msg->channel === 'spotify':
-                    $from->send(json_encode([
-                        'Not implemented yet!'
-                    ]));
-                    break;
+            if ($response = $this->process(json_decode($msg))) {
+                foreach ($this->connections as $k => $connection) {
+                    $connection->send(json_encode($response));
+                }
             }
-
-            sleep(0.1);
-            foreach ($this->connections as $k => $connection) {
-                $connection->send(Stats::update());
-            }
-
-
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
@@ -122,6 +72,38 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     function onError(\Ratchet\ConnectionInterface $conn, \Exception $e)
     {
         // TODO: Implement onError() method.
+    }
+
+
+    /**
+     * @param $msg
+     * @return mixed
+     * @throws \Exception
+     */
+    private function process($msg)
+    {
+        if (isset($msg->channel)) {
+            $channels = [
+                'omx' => OMXPlayer::class,
+//                'spotify' => Spotify::class
+            ];
+            if (!key_exists($msg->channel, $channels)) {
+                throw new \Exception('Channel not exists!');
+            }
+            if (!isset($msg->method)) {
+                throw new \Exception('Method not defined!');
+            }
+            $channel = $channels[$msg->channel];
+            if ($msg->method === 'get') {
+                return $channel::$$msg->property;
+            }
+
+            if (!method_exists($channel, $msg->property)) {
+                throw new \Exception('Method ' . $channel . '::[' . $msg->property . ']() not exists!');
+            }
+            call_user_func_array($channel . '::' . $msg->property, isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : []);
+            return $channel::$properties;
+        }
     }
 
 }
