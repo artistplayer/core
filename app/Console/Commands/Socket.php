@@ -115,7 +115,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                 throw new \Exception('Method ' . $channel . '::[' . $msg->property . ']() not exists!');
             }
 
-            $parameters = isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : [];
+            $parameters = array_values(isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : []);
             var_dump($parameters);
             call_user_func_array([$channel, $msg->property], $parameters);
 
