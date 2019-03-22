@@ -48,14 +48,16 @@ class Stats extends \Illuminate\Console\Command
         $playlist = 1;
         $muted = false;
 
-
-        var_dump($status);
-
         if ($source) {
             $integrity_hash = explode("/media", join(PHP_EOL, $source));
             $integrity_hash = explode("/", $integrity_hash[0]);
             $integrity_hash = end($integrity_hash);
             $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
+
+            if ($file->playtime && isset($duration)) {
+                $duration = [$file->playtime * 1000000];
+            }
+
         }
 
         return json_encode([
