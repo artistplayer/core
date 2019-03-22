@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\File;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -62,6 +63,27 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                             'Property not defined!'
                         ]));
                     }
+
+
+                    if ($msg->property === 'play') {
+                        if (!isset($msg->value)) {
+                            return $from->send(json_encode([
+                                'Value not defined!'
+                            ]));
+                        }
+                        if (!isset($msg->value->file)) {
+                            return $from->send(json_encode([
+                                'File in value not defined!'
+                            ]));
+                        }
+                        $file = File::find($msg->value->file);
+                        $msg->value = \Storage::disk('local')->url('public/' . $file->integrity_hash . '/media.' . $file->format);
+                        if ($file->trimAtStart) {
+                            $msg->value .= " " . $file->trimAtStart;
+                        }
+                    }
+
+
                     exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
                     if ($response) {
                         $from->send(json_encode([
