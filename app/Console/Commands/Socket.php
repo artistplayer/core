@@ -23,6 +23,9 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     protected $description = 'Run Socket Server';
 
 
+    private $connections = [];
+
+
     public function handle()
     {
         exec("chmod 0777 bin -Rf");
@@ -39,22 +42,8 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     function onOpen(\Ratchet\ConnectionInterface $conn)
     {
-        exec("bin/omxcontrols get position", $position);
-        exec("bin/omxcontrols get duration", $duration);
-        exec("bin/omxcontrols get volume", $volume);
-        exec("bin/omxcontrols get source", $source);
-        exec("bin/omxcontrols get status", $status);
-
-        $conn->send(json_encode([
-            'method' => 'playstate',
-            'value' => [
-                'position' => join(PHP_EOL, $position),
-                'duration' => join(PHP_EOL, $duration),
-                'volume' => join(PHP_EOL, $volume),
-                'source' => join(PHP_EOL, $source),
-                'status' => join(PHP_EOL, $status)
-            ]
-        ]));
+        $this->connections[] = $conn;
+        $conn->send(Stats::update());
     }
 
     function onMessage(\Ratchet\ConnectionInterface $from, $msg)
@@ -93,7 +82,11 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
     function onClose(\Ratchet\ConnectionInterface $conn)
     {
-        // TODO: Implement onClose() method.
+        foreach ($this->connections as $k => $connection) {
+            if ($connection === $conn) {
+                unset($this->connections[$k]);
+            }
+        }
     }
 
     function onError(\Ratchet\ConnectionInterface $conn, \Exception $e)
