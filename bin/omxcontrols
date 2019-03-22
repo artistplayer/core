@@ -42,6 +42,7 @@ case $1 in
 	set)
 		case $2 in
 			play)
+			    kill $(ps aux | grep 'omxplayer' | awk '{print $2}')
 				omxplayer $3 --pos $4 --vol 0 --amp 0 > /dev/null &
 				exit
 				;;
