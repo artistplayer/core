@@ -84,6 +84,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                     }
 
 
+                    echo "bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : "");
                     exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
                     if ($response) {
                         $from->send(json_encode([
