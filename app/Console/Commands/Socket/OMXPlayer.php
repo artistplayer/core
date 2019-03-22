@@ -16,16 +16,19 @@ class OMXPlayer
 
     public function __construct()
     {
+        $this->update();
+    }
+
+    private function update()
+    {
         foreach (['volume', 'source', 'status', 'position', 'duration'] as $property) {
             if ($value = $this->execute('get', $property)) {
                 $this->properties[$property] = $value;
             }
         }
-
         $this->properties['mode'] = 'normal';
         $this->properties['muted'] = false;
         $this->properties['playlist'] = 1;
-
         if (isset($this->properties['source'])) {
             $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
             $integrity_hash = explode("/", $integrity_hash[0]);
@@ -84,7 +87,7 @@ class OMXPlayer
 
     public function __toString()
     {
-        $this->__construct();
+        $this->update();
         return json_encode([
             'channel' => 'omx',
             'properties' => $this->properties
