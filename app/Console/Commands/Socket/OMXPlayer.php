@@ -29,7 +29,7 @@ class OMXPlayer
         $this->properties['mode'] = 'normal';
         $this->properties['muted'] = false;
         $this->properties['playlist'] = 1;
-        if (isset($this->properties['source'])) {
+        if (isset($this->properties['source']) && count($this->properties['source']) > 0) {
             $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
             $integrity_hash = explode("/", $integrity_hash[0]);
             $integrity_hash = end($integrity_hash);
