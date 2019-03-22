@@ -45,7 +45,7 @@ class Stats extends \Illuminate\Console\Command
         exec("bin/omxcontrols get status", $status);
 
 
-        $integrity_hash = explode("/media", $source);
+        $integrity_hash = explode("/media", join(PHP_EOL, $source));
         $integrity_hash = explode("/", $integrity_hash[0]);
         $integrity_hash = end($integrity_hash);
         $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
