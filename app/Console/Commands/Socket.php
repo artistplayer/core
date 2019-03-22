@@ -33,7 +33,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
     {
         exec("chmod 0777 bin -Rf");
 
-        $this->channels[] = new OMXPlayer();
+        $this->channels['omx'] = new OMXPlayer();
 
 
         $server = IoServer::factory(
