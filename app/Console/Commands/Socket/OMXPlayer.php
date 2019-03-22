@@ -33,8 +33,13 @@ class OMXPlayer
             $integrity_hash = end($integrity_hash);
             $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
             $this->properties['file'] = $file->id;
-            $this->properties['position'] = $file->trimAtStart * 1000000;
-            $this->properties['duration'] = $file->playTime * 1000000;
+
+            if (!isset($this->properties['position'])) {
+                $this->properties['position'] = $file->trimAtStart * 1000000;
+            }
+            if (!isset($this->properties['duration'])) {
+                $this->properties['duration'] = $file->playtime * 1000000;
+            }
         }
     }
 
