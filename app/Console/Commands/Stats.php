@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 
+use App\File;
 use WebSocket\Client;
 
 class Stats extends \Illuminate\Console\Command
@@ -42,6 +43,13 @@ class Stats extends \Illuminate\Console\Command
         exec("bin/omxcontrols get volume", $volume);
         exec("bin/omxcontrols get source", $source);
         exec("bin/omxcontrols get status", $status);
+
+
+        $integrity_hash = explode("/media", $source);
+        $integrity_hash = explode("/", $integrity_hash[0]);
+        $integrity_hash = end($integrity_hash);
+        $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
+
         return json_encode([
             'method' => 'playstate',
             'value' => [
@@ -49,7 +57,8 @@ class Stats extends \Illuminate\Console\Command
                 'duration' => join(PHP_EOL, $duration),
                 'volume' => join(PHP_EOL, $volume),
                 'source' => join(PHP_EOL, $source),
-                'status' => join(PHP_EOL, $status)
+                'status' => join(PHP_EOL, $status),
+                'fileId' => $file->id
             ]
         ]);
     }
