@@ -70,11 +70,17 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                     }
                     break;
                 case isset($msg->channel) && $msg->channel === 'spotify':
-                    $from->send(json_encode([
+                    return $from->send(json_encode([
                         'Not implemented yet!'
                     ]));
                     break;
             }
+
+            foreach ($this->connections as $k => $connection) {
+                $connection->send(json_encode($msg));
+            }
+
+
         } catch (\Exception $e) {
             echo $e->getMessage();
         }
