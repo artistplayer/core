@@ -44,6 +44,10 @@ class Stats extends \Illuminate\Console\Command
         @exec("bin/omxcontrols get source", $source);
         @exec("bin/omxcontrols get status", $status);
 
+        $mode = 'normal';
+        $playlist = 1;
+        $muted = false;
+
 
         if ($source) {
             $integrity_hash = explode("/media", join(PHP_EOL, $source));
@@ -57,10 +61,14 @@ class Stats extends \Illuminate\Console\Command
             'value' => [
                 'position' => isset($position) ? join(PHP_EOL, $position) : 0,
                 'duration' => isset($duration) ? join(PHP_EOL, $duration) : 0,
+                'status' => isset($status) ? join(PHP_EOL, $status) : 'Paused',
+                'mode' => isset($mode) ? $mode : 'normal',
+
                 'volume' => isset($volume) ? join(PHP_EOL, $volume) : 100,
-                'source' => isset($source) ? join(PHP_EOL, $source) : null,
-                'status' => isset($status) ? join(PHP_EOL, $status) : null,
-                'fileId' => (isset($file->id) ? $file->id : null)
+                'muted' => isset($muted) ? $muted : false,
+
+                'file' => (isset($file->id) ? $file->id : null),
+                'playlist' => (isset($playlist) ? $playlist : null)
             ]
         ]);
     }
