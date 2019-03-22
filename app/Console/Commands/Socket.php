@@ -35,7 +35,6 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
 
         $this->channels['omx'] = new OMXPlayer();
 
-
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
@@ -52,7 +51,11 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
         $this->connections[] = $conn;
 
         foreach ($this->channels as $channel) {
-            $channel->update();
+            try {
+                $channel->update();
+            } catch (\Exception $e) {
+                echo $e->getMessage();
+            }
             $conn->send($channel);
         }
     }
