@@ -64,13 +64,13 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                     }
                     exec("bin/omxcontrols " . $msg->method . " " . $msg->property . " " . (isset($msg->value) ? $msg->value : null) . ($msg->method === 'set' ? " > /dev/null 2>&1" : null), $response);
                     if ($response) {
-                        return $from->send(json_encode([
+                        $from->send(json_encode([
                             $response
                         ]));
                     }
                     break;
                 case isset($msg->channel) && $msg->channel === 'spotify':
-                    return $from->send(json_encode([
+                    $from->send(json_encode([
                         'Not implemented yet!'
                     ]));
                     break;
