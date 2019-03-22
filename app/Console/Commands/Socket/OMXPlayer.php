@@ -52,8 +52,8 @@ class OMXPlayer
 
         $this->properties['file'] = $fileId;
         $this->properties['playlist'] = $playlistId;
-        $this->properties['duration'] = $file->playTime * 1000000;
-        $this->properties['duration'] = $file->playTime * 1000000;
+        $this->properties['duration'] = $file->playtime * 1000000;
+        $this->properties['position'] = $file->trimAtStart * 1000000;
         $this->properties['source'] = $source;
         $this->properties['status'] = 'Playing';
     }
