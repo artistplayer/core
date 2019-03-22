@@ -18,7 +18,7 @@ class OMXPlayer
     {
         $this->update();
         if (isset($this->properties['source']) && count($this->properties['source']) > 0) {
-            $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
+            $integrity_hash = explode("/media", $this->properties['source']);
             $integrity_hash = explode("/", $integrity_hash[0]);
             $integrity_hash = end($integrity_hash);
             $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
@@ -81,7 +81,7 @@ class OMXPlayer
     {
         $cmd = "bin/omxcontrols " . $method . " " . $property . " " . $value . ($method === 'set' ? " > /dev/null 2>&1" : "");
         @exec($cmd, $response);
-        return $response;
+        return join(PHP_EOL, $response);
     }
 
 
