@@ -126,6 +126,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                 }
             }
             call_user_func_array([$channel, $msg->property], $parameters);
+            $channel->update();
 
             return $channel;
         }

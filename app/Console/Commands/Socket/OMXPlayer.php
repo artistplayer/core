@@ -16,6 +16,18 @@ class OMXPlayer
 
     public function __construct()
     {
+        $this->update();
+        if (isset($this->properties['source']) && count($this->properties['source']) > 0) {
+            $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
+            $integrity_hash = explode("/", $integrity_hash[0]);
+            $integrity_hash = end($integrity_hash);
+            $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
+            $this->properties['file'] = $file->id;
+        }
+    }
+
+    public function update()
+    {
         foreach (['volume', 'source', 'status', 'position', 'duration'] as $property) {
             if ($value = $this->execute('get', $property)) {
                 $this->properties[$property] = $value;
@@ -24,13 +36,6 @@ class OMXPlayer
         $this->properties['mode'] = 'normal';
         $this->properties['muted'] = false;
         $this->properties['playlist'] = 1;
-        if (isset($this->properties['source']) && count($this->properties['source']) > 0) {
-            $integrity_hash = explode("/media", join(PHP_EOL, $this->properties['source']));
-            $integrity_hash = explode("/", $integrity_hash[0]);
-            $integrity_hash = end($integrity_hash);
-            $file = File::all()->where('integrity_hash', '=', $integrity_hash)->first();
-            $this->properties['file'] = $file->id;
-        }
     }
 
 
