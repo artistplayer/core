@@ -155,7 +155,7 @@ class File extends Schema
     {
 
         $response['url'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/media.' . $model->format));
-        if (isset($response['thumbnail'])) {
+        if (isset($response['thumbnail']) && $response['thumbnail'] === true) {
             $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
         }
     }

@@ -21,7 +21,7 @@ class FileResource extends JsonResource
         }
         $__schema = new \App\Console\Commands\Generator\Schemas\File();
         $response['url'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/media.' . $model->format));
-        if (isset($response['thumbnail'])) {
+        if (isset($response['thumbnail']) && $response['thumbnail'] === true) {
             $response['thumbnail'] = url(\Storage::disk('local')->url('public/' . $model->integrity_hash . '/image.jpg'));
         }
         return $response;
