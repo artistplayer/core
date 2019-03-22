@@ -16,11 +16,6 @@ class OMXPlayer
 
     public function __construct()
     {
-        $this->update();
-    }
-
-    private function update()
-    {
         foreach (['volume', 'source', 'status', 'position', 'duration'] as $property) {
             if ($value = $this->execute('get', $property)) {
                 $this->properties[$property] = $value;
@@ -87,7 +82,6 @@ class OMXPlayer
 
     public function __toString()
     {
-        $this->update();
         return json_encode([
             'channel' => 'omx',
             'properties' => $this->properties
