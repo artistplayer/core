@@ -116,7 +116,8 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
             }
 
             $parameters = isset($msg->value) ? is_array($msg->value) ? $msg->value : [$msg->value] : [];
-            $channel->{$msg->property}($parameters);
+            call_user_func_array([$channel, $msg->property], $parameters);
+
             return $channel;
         }
         return false;
