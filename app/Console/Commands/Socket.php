@@ -99,6 +99,7 @@ class Socket extends \Illuminate\Console\Command implements \Ratchet\MessageComp
                     break;
             }
 
+            sleep(0.1);
             foreach ($this->connections as $k => $connection) {
                 $connection->send(Stats::update());
             }
