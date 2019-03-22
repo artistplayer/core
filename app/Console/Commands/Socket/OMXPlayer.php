@@ -87,7 +87,10 @@ class OMXPlayer
 
     public function __toString()
     {
-        return json_encode($this->properties);
+        return json_encode([
+            'channel' => 'omx',
+            'properties' => $this->properties
+        ]);
     }
 
 }
