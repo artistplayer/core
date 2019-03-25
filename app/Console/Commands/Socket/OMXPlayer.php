@@ -21,14 +21,20 @@ class OMXPlayer
 
     public function update()
     {
+        $this->properties['volume'] = 100;
+        $this->properties['source'] = null;
+        $this->properties['status'] = 'Paused';
+        $this->properties['position'] = 0;
+        $this->properties['duration'] = 0;
+        $this->properties['mode'] = 'normal';
+        $this->properties['muted'] = false;
+        $this->properties['playlist'] = 1;
+
         foreach (['volume', 'source', 'status', 'position', 'duration'] as $property) {
             if ($value = $this->execute('get', $property)) {
                 $this->properties[$property] = $value;
             }
         }
-        $this->properties['mode'] = 'normal';
-        $this->properties['muted'] = false;
-        $this->properties['playlist'] = 1;
         if (isset($this->properties['source']) && count($this->properties['source']) > 0) {
             $integrity_hash = explode("/media", $this->properties['source']);
             $integrity_hash = explode("/", $integrity_hash[0]);
