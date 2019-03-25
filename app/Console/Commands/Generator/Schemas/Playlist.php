@@ -50,9 +50,15 @@ class Playlist extends Schema
     }
 
 
-    public function processPivot(\Illuminate\Http\Request &$request, array &$data): void
+    public function processPivot(\Illuminate\Http\Request &$request, array &$data, $referenceId, $modelId = null): void
     {
-        $data['position'] = 1;
+        if ($modelId) {
+            $position = 1;
+            if ($latest = \App\FilePlaylist::all()->where('playlist_id', '=', $modelId)->sortByDesc('position')->first()) {
+                $position = $latest->position + 1;
+            }
+            $data['position'] = $position;
+        }
     }
 
     public function pivotResponse(\Illuminate\Http\Request &$request, Model &$model, array &$response): void

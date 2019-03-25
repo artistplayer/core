@@ -45,7 +45,7 @@ class {{referring}}Controller extends Controller
         $this->authorize('store', Playlist::class);
 
         $data = $this->validate($request, {{insertValidation}});
-        $data = $this->getData($request, $data);
+        $data = $this->getData($request, $data, $referenceId);
 
         $reference = {{reference}}::findOrFail($referenceId);
         $reference->{{collection}}()->attach($request->get('{{collection}}'), $data);
@@ -89,7 +89,7 @@ class {{referring}}Controller extends Controller
         $this->authorize('update', $model);
 
         $data = $this->validate($request, {{updateValidation}});
-        $data = $this->getData($request, $data);
+        $data = $this->getData($request, $data, $referenceId, $modelId);
 
 
         $reference->{{collection}}()->updateExistingPivot($modelId, $data);
@@ -124,9 +124,11 @@ class {{referring}}Controller extends Controller
     /**
      * @param Request $request
      * @param array $data
+     * @param integer $referenceId
+     * @param integer|null $modelId
      * @return array
      */
-    private function getData(Request $request, array $data)
+    private function getData(Request $request, array $data, $referenceId, $modelId = null)
     {
         {{processPivot}}
 

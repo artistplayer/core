@@ -88,9 +88,11 @@ abstract class Schema
      *
      * @param \Illuminate\Http\Request $request
      * @param array $data
+     * @param integer $referenceId
+     * @param integer|null $modelId
      * @return void
      */
-    public function processPivot(\Illuminate\Http\Request &$request, array &$data): void
+    public function processPivot(\Illuminate\Http\Request &$request, array &$data, $referenceId, $modelId = null): void
     {
     }
 

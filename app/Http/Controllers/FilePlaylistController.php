@@ -39,7 +39,7 @@ class FilePlaylistController extends Controller
 			'position' => 'integer',
 			'playlists' => 'array',
 		]);
-        $data = $this->getData($request, $data);
+        $data = $this->getData($request, $data, $referenceId);
         $reference = File::findOrFail($referenceId);
         $reference->playlists()->attach($request->get('playlists'), $data);
         $attached = $reference->playlists()->whereIn('playlist_id', $request->get('playlists'))->get();
@@ -74,7 +74,7 @@ class FilePlaylistController extends Controller
         $data = $this->validate($request, [
 			'position' => 'integer',
 		]);
-        $data = $this->getData($request, $data);
+        $data = $this->getData($request, $data, $referenceId, $modelId);
         $reference->playlists()->updateExistingPivot($modelId, $data);
         $model = $reference->playlists()->findOrFail($modelId);
         return new FilePlaylistResource($model);
@@ -96,12 +96,20 @@ class FilePlaylistController extends Controller
     /**
      * @param Request $request
      * @param array $data
+     * @param integer $referenceId
+     * @param integer|null $modelId
      * @return array
      */
-    private function getData(Request $request, array $data)
+    private function getData(Request $request, array $data, $referenceId, $modelId = null)
     {
         $__schema = new \App\Console\Commands\Generator\Schemas\Playlist();
-        $data['position'] = 1;
+        if ($modelId) {
+            $position = 1;
+            if ($latest = \App\FilePlaylist::all()->where('playlist_id', '=', $modelId)->sortByDesc('position')->first()) {
+                $position = $latest->position + 1;
+            }
+            $data['position'] = $position;
+        }
 		unset($data['playlists']);
         return $data;
     }
