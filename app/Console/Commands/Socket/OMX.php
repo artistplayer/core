@@ -27,6 +27,7 @@ class OMX
     public function __construct(\Illuminate\Console\Command $cli)
     {
         // Clear all running instances
+        chmod("bin/omxcontrols", 0777);
         exec("kill $(ps aux | grep 'omxplayer' | awk '{print $2}')");
 
         $this->cli = $cli;
@@ -120,8 +121,10 @@ class OMX
 
     private function next()
     {
-        // Goto next file
         $this->file = null;
+        if ($this->playlist) {
+
+        }
     }
 
 
