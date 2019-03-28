@@ -12,7 +12,7 @@ class OMX
     private $cli;
     private $client;
 
-    private $volume = 100;
+    private $volume = 50;
     private $muted = false;
     private $mode = 'normal';
     /** @var Playlist */
