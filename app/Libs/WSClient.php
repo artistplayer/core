@@ -103,6 +103,21 @@ class WSClient
         $this->connection->send($msg);
     }
 
+
+    public function send($msg, $sender = null)
+    {
+        $msg = json_encode([
+            'event' => 'message',
+            'data' => $msg,
+            'sender' => $sender
+        ]);
+        if ($this->debug) {
+            $this->cli->info('Send message:');
+            $this->cli->info($msg);
+        }
+        $this->connection->send($msg);
+    }
+
     public function every($interval, $callable)
     {
         $this->loop->addPeriodicTimer($interval, function () use ($callable) {

@@ -10,7 +10,6 @@ class OMX
 {
     /** @var \Illuminate\Console\Command $cli */
     private $cli;
-
     private $client;
 
     private $volume = 100;
@@ -135,7 +134,7 @@ class OMX
             'muted' => $this->muted,
             'mode' => $this->mode,
             'status' => $this->status,
-            'position' => $this->position,
+            'position' => $this->position / 1000000,
             'playlist' => $this->playlist,
             'file' => $this->file
         ];
