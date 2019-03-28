@@ -124,6 +124,7 @@ class OMX
     private function next()
     {
         $this->file = null;
+        $this->position = 0;
         if ($this->playlist) {
 
         }
