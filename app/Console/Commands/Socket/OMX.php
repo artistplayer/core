@@ -125,9 +125,11 @@ class OMX
     {
         $this->file = null;
         $this->position = 0;
+        $this->status = 'Paused';
         if ($this->playlist) {
 
         }
+        $this->client->publish('omx', $this->state());
     }
 
 
