@@ -30,6 +30,8 @@ class OMX
         // Clear all running instances
         chmod("bin/omxcontrols", 0777);
         exec("kill $(ps aux | grep 'omxplayer' | awk '{print $2}')");
+        $this->volume = $this->execute("get", "volume");
+
 
         $this->cli = $cli;
         $this->client = new WSClient('ws://localhost:9000', $cli);
@@ -76,7 +78,7 @@ class OMX
 
     protected function setVolume($volume)
     {
-        $this->execute("set", "volume", $volume);
+        $this->execute("set", "volume", $volume . '%');
         $this->volume = $volume;
     }
 
