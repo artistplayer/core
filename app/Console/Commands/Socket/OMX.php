@@ -30,7 +30,7 @@ class OMX
         // Clear all running instances
         chmod("bin/omxcontrols", 0777);
         exec("kill $(ps aux | grep 'omxplayer' | awk '{print $2}')");
-        $this->execute("set", "volume", 1);
+        $this->execute("set", "volume", 0.5);
 
 
         $this->cli = $cli;
