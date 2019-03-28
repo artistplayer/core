@@ -113,7 +113,7 @@ class OMX
         $file = File::find($fileId);
 
         $source = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
-        $this->execute("set", "play", $source . ' ' . $file->trimAtStart . ' ' . (2000 * log10($this->volume / 100)));
+        $this->execute("set", "play", $source . ' ' . $file->trimAtStart . ' ' . (2000 * log($this->volume / 100)));
         $this->file = $file;
     }
 
