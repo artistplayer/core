@@ -62,7 +62,7 @@ class OMX
                     return;
                 }
                 $this->client->publish('omx', [
-                    'position' => $position,
+                    'position' => $position / 1000000,
                     'status' => $status
                 ]);
             }
