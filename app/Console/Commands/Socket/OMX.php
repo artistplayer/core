@@ -49,7 +49,7 @@ class OMX
 
         $this->client->every(0.5, function () {
             $position = $this->execute("get", "position");
-            $status = $this->execute("get", "state");
+            $status = $this->execute("get", "status");
             if ($this->position !== $position) {
                 $this->position = $position;
             }
@@ -82,7 +82,7 @@ class OMX
 
     protected function setStatus($status)
     {
-        $state = $this->execute('get', 'state');
+        $state = $this->execute('get', 'status');
         if ($state !== $status) {
             $this->execute("set", "pause");
         }
