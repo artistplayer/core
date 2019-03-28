@@ -90,7 +90,6 @@ class OMX
 
     protected function setMode($mode)
     {
-        // @todo: Exec to set mode
         $this->mode = $mode;
     }
 
@@ -125,12 +124,14 @@ class OMX
 
     private function next()
     {
-        $this->file = null;
         $this->position = 0;
         $this->status = 'Paused';
-        if ($this->playlist) {
-
+        if ($this->mode !== 'single' && $this->file && $this->playlist) {
+            $this->file = $this->playlist->files()->where('position', '>', $this->file->position)->first();
+        } else {
+            $this->file = null;
         }
+
         $this->client->publish('omx', $this->state());
     }
 
