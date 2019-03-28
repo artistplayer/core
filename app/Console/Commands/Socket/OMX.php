@@ -129,8 +129,17 @@ class OMX
 
         $next = null;
         if ($this->mode !== 'single' && $this->file && $this->playlist) {
+
+
             $current = $this->playlist->files()->find($this->file->id)->first();
-            $next = $this->playlist->files()->where('position', '>', $current->position)->orderBy('position', 'ASC')->first();
+
+
+            $next = $this->playlist->files()
+                ->wherePivot('position', '>', $current->position)
+                ->orderBy('position', 'ASC')->first();
+
+
+
             if (!$next && $this->playlist->files()->count() > 0) {
                 $next = $this->playlist->files()->orderBy('position', 'ASC')->first();
             }
