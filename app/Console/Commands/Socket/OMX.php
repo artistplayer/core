@@ -57,7 +57,10 @@ class OMX
                 if ($this->status !== $status) {
                     $this->status = $status;
                 }
-
+                if (empty($position) && empty($status)) {
+                    $this->next();
+                    return;
+                }
                 $this->client->publish('omx', [
                     'position' => $position,
                     'status' => $status
