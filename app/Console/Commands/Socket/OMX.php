@@ -62,7 +62,7 @@ class OMX
                     return;
                 }
                 $this->client->publish('omx', [
-                    'position' => $position / 1000000,
+                    'position' => ((int)$position) / 1000000,
                     'status' => $status
                 ]);
             }
@@ -134,7 +134,7 @@ class OMX
             'muted' => $this->muted,
             'mode' => $this->mode,
             'status' => $this->status,
-            'position' => $this->position / 1000000,
+            'position' => ((int)$this->position) / 1000000,
             'playlist' => $this->playlist,
             'file' => $this->file
         ];
