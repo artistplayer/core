@@ -39,6 +39,10 @@ class OMX
 
         $this->client->subscribe('omx', function ($data, $sender) { // Listen to messages from a specific channel
             foreach ($data as $property => $value) {
+                if ($property === 'position') {
+                    $property = ((int)$property) * 1000000;
+                }
+
                 if (property_exists($this, $property) && $this->{$property} !== $value) {
                     $method = 'set' . ucfirst($property);
                     if (method_exists($this, $method)) {
