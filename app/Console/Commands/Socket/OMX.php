@@ -65,12 +65,8 @@ class OMX
                     'status' => $status ?: 'Paused'
                 ]);
 
-                if (empty($position) && empty($status)) {
-                    $this->attempts++;
-                    if ($this->attempts > 2) {
-                        $this->attempts = 0;
-                        $this->next();
-                    }
+                if ($position >= ($this->file->playtime - 0.8) * 1000000) {
+                    $this->next();
                 }
             }
         });
