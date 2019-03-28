@@ -48,20 +48,22 @@ class OMX
         });
 
         $this->client->every(0.5, function () {
-            $position = $this->execute("get", "position");
-            $status = $this->execute("get", "status");
-            if ($this->position !== $position) {
-                $this->position = $position;
-            }
-            if ($this->status !== $status) {
-                $this->status = $status;
-                $this->next();
-            }
+            if ($this->file) {
+                $position = $this->execute("get", "position");
+                $status = $this->execute("get", "status");
+                if ($this->position !== $position) {
+                    $this->position = $position;
+                }
+                if ($this->status !== $status) {
+                    $this->status = $status;
+                    $this->next();
+                }
 
-            $this->client->publish('omx', [
-                'position' => $position,
-                'status' => $status
-            ]);
+                $this->client->publish('omx', [
+                    'position' => $position,
+                    'status' => $status
+                ]);
+            }
         });
 
         $this->client->run();
