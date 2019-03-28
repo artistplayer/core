@@ -119,6 +119,7 @@ class OMX
     private function next()
     {
         // Goto next file
+        $this->file = null;
     }
 
 
