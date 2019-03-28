@@ -127,24 +127,17 @@ class OMX
         $this->position = 0;
         $this->status = 'Paused';
 
-        $next = null;
         if ($this->mode !== 'single' && $this->file && $this->playlist) {
-
-
-            $current = $this->playlist->files()->find($this->file->id)->first();
-
-
-            $next = $this->playlist->files()
-                ->wherePivot('position', '>', $current->position)
-                ->orderBy('position', 'ASC')->first();
-
-
-
-            if (!$next && $this->playlist->files()->count() > 0) {
-                $next = $this->playlist->files()->orderBy('position', 'ASC')->first();
+            $current = $this->playlist->files()->find($this->file->id);
+            $this->file = null;
+            if($next = $this->playlist->files()->wherePivot('position', '>', $current->pivot->position)->orderBy('position', 'ASC')->get()->first()){
+                $this->setFile($next->id);
+            } elseif($this->mode === 'repeat' && $this->playlist->files()->count() > 0){
+                $this->setFile($this->playlist->files()->first()->id);
             }
+        } else {
+            $this->file = null;
         }
-        $this->file = $next;
 
         $this->client->publish('omx', $this->state());
     }
