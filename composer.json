@@ -19,6 +19,7 @@
     "jenssegers/model": "^1.2",
     "laravel/framework": "5.8.*",
     "laravel/tinker": "^1.0",
+    "ratchet/pawl": "^0.3.4",
     "textalk/websocket": "^1.2"
   },
   "require-dev": {
