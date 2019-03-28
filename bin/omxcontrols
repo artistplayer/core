@@ -21,7 +21,10 @@ case $1 in
 				exit
 				;;
 			volume)
-				awk -F"[][]" '/dB/ { print $2 }' <(amixer sget PCM)
+				volume=`dbus-send --print-reply=literal --session --reply-timeout=500  --dest=org.mpris.MediaPlayer2.DeaDBeeF /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Volume"`
+				[ $? -ne 0 ] && exit 1
+				echo "$(awk '{print $2}' <<< "$volume")"
+				exit
 				exit
 				;;
 			source)
@@ -62,7 +65,7 @@ case $1 in
 				exit
 				;;
 			volume)
-			    amixer sset 'PCM' $3 >/dev/null
+			    dbus-send --print-reply --session --dest=org.mpris.MediaPlayer2.DeaDBeeF /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Set string:'org.mpris.MediaPlayer2.Player' string:'Volume' variant:double:$3 >/dev/null
 			    exit
 			    ;;
 		esac

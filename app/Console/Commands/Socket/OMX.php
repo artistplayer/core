@@ -78,7 +78,7 @@ class OMX
 
     protected function setVolume($volume)
     {
-        $this->execute("set", "volume", $volume . '%');
+        $this->execute("set", "volume", $volume / 100);
         $this->volume = $volume;
     }
 
