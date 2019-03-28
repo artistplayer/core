@@ -45,7 +45,7 @@ case $1 in
 		case $2 in
 			play)
 			    kill $(ps aux | grep 'omxplayer' | awk '{print $2}')
-				omxplayer $3 --pos $4 --vol {-6000 + {{$5 * 6000}}} > /dev/null &
+				omxplayer $3 --pos $4 --vol $($5 * -6000) > /dev/null &
 			    exit
 				;;
 			pause)
