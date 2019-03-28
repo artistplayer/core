@@ -56,7 +56,6 @@ class OMX
                 }
                 if ($this->status !== $status) {
                     $this->status = $status;
-                    $this->next();
                 }
 
                 $this->client->publish('omx', [
