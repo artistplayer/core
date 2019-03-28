@@ -23,6 +23,8 @@ class OMX
     private $status = 'Paused';
     private $position = 0;
 
+    private $attempts = 0;
+
     public function __construct(\Illuminate\Console\Command $cli)
     {
         // Clear all running instances
@@ -47,6 +49,7 @@ class OMX
             $this->client->publish('omx', $this->state(), $sender);
         });
 
+
         $this->client->every(0.5, function () {
             if ($this->file) {
                 $position = $this->execute("get", "position");
@@ -57,14 +60,18 @@ class OMX
                 if ($this->status !== $status) {
                     $this->status = $status;
                 }
-                if (empty($position) && empty($status)) {
-                    $this->next();
-                    return;
-                }
                 $this->client->publish('omx', [
                     'position' => ((int)$position) / 1000000,
-                    'status' => $status
+                    'status' => $status ?: 'Paused'
                 ]);
+
+                if (empty($position) && empty($status)) {
+                    $this->attempts++;
+                    if ($this->attempts > 2) {
+                        $this->attempts = 0;
+                        $this->next();
+                    }
+                }
             }
         });
 
