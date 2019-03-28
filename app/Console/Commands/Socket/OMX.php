@@ -57,6 +57,8 @@ class OMX
                 $this->status = $status;
                 $this->next();
             }
+
+            $this->client->publish('omx', $this->state());
         });
 
         $this->client->run();
