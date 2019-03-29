@@ -77,9 +77,8 @@ setupPackages(){
     sudo su - signalize -c "cd core && php ../composer.phar install"
     sudo su - signalize -c "cd core && cp .env.example .env"
     sudo su - signalize -c "touch core/database/database.sqlite" >/dev/null 2>&1
-    sudo su - signalize -c "chmod 0777 core/database" >/dev/null 2>&1
-    sudo su - signalize -c "chmod 0777 core/database/database.sqlite" >/dev/null 2>&1
-    sudo su - signalize -c "chmod 0777 -Rf core/storage" >/dev/null 2>&1
+    sudo chmod 0777 core/database -Rf >/dev/null 2>&1
+    sudo chmod 0777 core/storage -Rf >/dev/null 2>&1
     sudo su - signalize -c "cd core && php artisan migrate"
     sudo su - signalize -c "cd core && php artisan storage:link"
     sudo su - signalize -c "cd core && php artisan optimize"
