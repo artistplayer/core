@@ -185,7 +185,6 @@ finish(){
         Go to the website to complete the installation:
         Web address: http://${IPADDR}$(if [ $PORT != "80" ]; then echo ":${PORT}"; fi)/" \
     12 78
-    exit;
 }
 
 
