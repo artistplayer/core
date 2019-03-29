@@ -14,7 +14,8 @@ class Device extends Model
         "id" => "string",
         "label" => "string",
         "size" => "double",
-        "location" => "string"
+        "location" => "string",
+        "type" => "string"
     ];
 
 
