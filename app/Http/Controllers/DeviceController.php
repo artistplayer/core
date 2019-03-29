@@ -20,13 +20,20 @@ class DeviceController extends Controller
     }
 
 
-    public function index(Request $request)
+    public function search(Request $request)
     {
         $devices = $this->devices;
         if ($request->get('type')) {
             $devices = $devices->where('type', '=', $request->get('type'));
         }
+
         return DeviceResource::collection($devices);
+    }
+
+
+    public function index(Request $request)
+    {
+        return DeviceResource::collection($this->devices);
     }
 
     public function show(Request $request, ?string $id)
