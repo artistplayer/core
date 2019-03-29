@@ -78,6 +78,7 @@ class OMX
 
     protected function setVolume($volume)
     {
+        $this->muted = !($volume > 0);
         $this->execute("set", "volume", $volume / 100);
         $this->volume = $volume;
     }
@@ -85,6 +86,7 @@ class OMX
     protected function setMuted($muted)
     {
         // @todo: Exec to mute
+        $this->execute("set", "volume", $muted ? 0 : ($this->volume / 100));
         $this->muted = $muted;
     }
 
@@ -111,8 +113,9 @@ class OMX
     {
         $file = File::find($fileId);
 
+        $volume = $this->muted ? 0 : $this->volume;
         $source = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
-        $this->execute("set", "play", $source . ' ' . $file->trimAtStart . ' ' . (2000 * log($this->volume / 100)));
+        $this->execute("set", "play", $source . ' ' . $file->trimAtStart . ' ' . (2000 * log($volume / 100)));
         $this->file = $file;
     }
 
@@ -130,9 +133,9 @@ class OMX
         if ($this->mode !== 'single' && $this->file && $this->playlist) {
             $current = $this->playlist->files()->find($this->file->id);
             $this->file = null;
-            if($next = $this->playlist->files()->wherePivot('position', '>', $current->pivot->position)->orderBy('position', 'ASC')->get()->first()){
+            if ($next = $this->playlist->files()->wherePivot('position', '>', $current->pivot->position)->orderBy('position', 'ASC')->get()->first()) {
                 $this->setFile($next->id);
-            } elseif($this->mode === 'repeat' && $this->playlist->files()->count() > 0){
+            } elseif ($this->mode === 'repeat' && $this->playlist->files()->count() > 0) {
                 $this->setFile($this->playlist->files()->first()->id);
             }
         } else {
