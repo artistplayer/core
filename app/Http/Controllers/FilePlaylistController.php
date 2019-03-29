@@ -95,6 +95,17 @@ class FilePlaylistController extends Controller
     }
     /**
      * @param Request $request
+     * @param $referenceId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function patch(Request $request, $referenceId)
+    {
+        var_dump($referenceId);
+        var_dump($request->request->all());
+        return response()->json([], 204);
+    }
+    /**
+     * @param Request $request
      * @param array $data
      * @param integer $referenceId
      * @param integer|null $modelId
