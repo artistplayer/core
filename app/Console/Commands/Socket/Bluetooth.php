@@ -41,8 +41,19 @@ class Bluetooth
                 'label' => $label
             ];
         }, $devices);
-
     }
+
+
+    private function connect($device)
+    {
+        exec("sudo /home/signalize/core/bin/bt-pan client -r " . $device);
+    }
+
+    private function disconnect($device)
+    {
+        exec("sudo hcitool dc " . $device);
+    }
+
 
     private function execute($cmd)
     {
