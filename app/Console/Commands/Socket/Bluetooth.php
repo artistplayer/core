@@ -33,8 +33,13 @@ class Bluetooth
         $scan = $this->execute("hcitool scan");
         $devices = explode(PHP_EOL, substr($scan, strpos($scan, PHP_EOL) + 1));
         return array_map(function ($data) {
-            $data = str_replace(["\t", '  '], ' ', $data);
-            return explode(' ', $data);
+            $data = trim($data);
+            $address = trim(substr($data, 0, strpos($data, ' ')));
+            $label = trim(substr($data, strpos($data, $address) + strlen($address)));
+            return [
+                'address' => $address,
+                'label' => $label
+            ];
         }, $devices);
 
     }
