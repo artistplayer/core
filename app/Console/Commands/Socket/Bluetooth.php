@@ -21,7 +21,7 @@ class Bluetooth
         });
 
         $this->client->subscribe('bluetooth', function ($data, $sender) { // Listen to messages from a specific channel
-
+            var_dump($data);
         });
 
 
