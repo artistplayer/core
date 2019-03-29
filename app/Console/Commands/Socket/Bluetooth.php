@@ -46,12 +46,12 @@ class Bluetooth
 
     private function connect($device)
     {
-        exec("sudo /home/signalize/core/bin/bt-pan client -r " . $device);
+        $this->execute("sudo /home/signalize/core/bin/bt-pan client -r " . $device);
     }
 
     private function disconnect($device)
     {
-        exec("sudo hcitool dc " . $device);
+        $this->execute("sudo hcitool dc " . $device);
     }
 
 
