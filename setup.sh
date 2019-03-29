@@ -150,7 +150,7 @@ setupService(){
 
     [Install]
     WantedBy=multi-user.target
-    ' > signalize.service" >/dev/null 2>&1
+    ' > socket-server.service" >/dev/null 2>&1
 
 
     sudo su - signalize -c "echo '[Unit]
@@ -167,12 +167,15 @@ setupService(){
 
     [Install]
     WantedBy=multi-user.target
-    ' > signalize.service" >/dev/null 2>&1
+    ' > socket-omx.service" >/dev/null 2>&1
 
 
-    sudo ln -s /home/signalize/signalize.service /etc/systemd/system/signalize.service &&
-    sudo systemctl start signalize &&
-    sudo systemctl enable signalize >/dev/null 2>&1
+    sudo ln -s /home/signalize/socket-server.service /etc/systemd/system/socket-server.service &&
+    sudo ln -s /home/signalize/socket-omx.service /etc/systemd/system/socket-omx.service &&
+    sudo systemctl start socket-server &&
+    sudo systemctl start socket-omx &&
+    sudo systemctl enable socket-server &&
+    sudo systemctl enable socket-omx >/dev/null 2>&1
 }
 
 finish(){
