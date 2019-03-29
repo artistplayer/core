@@ -20,7 +20,7 @@ class ResourceRegistrar extends OriginalRegistrar
         'update',
         'destroy',
         'search',
-        'patch'
+        'sync'
     ];
 
     /**
@@ -36,6 +36,7 @@ class ResourceRegistrar extends OriginalRegistrar
         $uri = $this->getResourceUri($name . '/search');
         return $this->router->post($uri, $action);
     }
+
     /**
      * @param  string $name
      * @param  string $base
@@ -43,10 +44,10 @@ class ResourceRegistrar extends OriginalRegistrar
      * @param  array $options
      * @return \Illuminate\Routing\Route
      */
-    protected function addResourcePatch($name, $base, $controller, $options)
+    protected function addResourceSync($name, $base, $controller, $options)
     {
-        $action = $this->getResourceAction($name, $controller, 'patch', $options);
+        $action = $this->getResourceAction($name, $controller, 'sync', $options);
         $uri = $this->getResourceUri($name);
-        return $this->router->patch($uri, $action);
+        return $this->router->put($uri, $action);
     }
 }

@@ -114,22 +114,37 @@ abstract class Schema
      * This function will be executed after the new model was Updated.
      *
      * @param \Illuminate\Http\Request $request
+     * @param $reference
      * @param $model
      * @return void
      */
-    public function updatePivot(\Illuminate\Http\Request &$request, &$model): void
+    public function updatePivot(\Illuminate\Http\Request &$request, &$reference, &$model): void
     {
     }
+
+    /**
+     * Do some functions after the sync was finished.
+     * This function will be executed after the model was Synchronized.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param $reference
+     * @return void
+     */
+    public function syncPivot(\Illuminate\Http\Request &$request, &$reference): void
+    {
+    }
+
 
     /**
      * Do some functions after the delete was finished.
      * This function will be executed after the model has been Destroyed.
      *
      * @param \Illuminate\Http\Request $request
+     * @param $reference
      * @param $model
      * @return void
      */
-    public function deletePivot(\Illuminate\Http\Request &$request, &$model): void
+    public function deletePivot(\Illuminate\Http\Request &$request, &$reference, &$model): void
     {
     }
 
