@@ -10,11 +10,11 @@ fi
 sudo apt-get install git -y
 
 if [ ! -f /home/signalize/core/composer.lock ]; then
-    sudo su - signalize -c "cd /home/signalize && git clone https://github.com/artistplayer/core.git core"
+    sudo su - signalize -c "git clone https://github.com/artistplayer/core.git core"
     sudo su - signalize -c "cd core && composer install"
 else
     sudo su - signalize -c "composer clearcache"
-    sudo su - signalize -c "cd /home/signalize && git pull"
+    sudo su - signalize -c "cd core && git pull"
     sudo su - signalize -c "cd core && composer update"
 fi
 
