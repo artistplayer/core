@@ -33,7 +33,7 @@ doInstall(){
         setupUser
 
         echo "Clean Composer Cache..."
-        sudo composer clearcache
+        sudo su - signalize -c "composer clearcache"
 
 	    echo "Installing Signalize..."
         setupPackages
