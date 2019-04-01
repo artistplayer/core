@@ -4,7 +4,7 @@
 sudo apt-get install git composer -y
 sudo su - signalize -c "composer clearcache"
 
-if [ ! -f /home/signalize/core ]; then
+if [ ! -f /home/signalize/core/composer.json ]; then
     sudo su - signalize -c "cd /home/signalize && git clone https://github.com/artistplayer/core.git core"
 fi
 sudo su - signalize -c "cd core && composer install"
