@@ -17,24 +17,23 @@ welcome(){
 }
 
 doInstall(){
-        echo "Installing PHP-FPM..."
+        echo "Installing..."
         sudo apt-get install ca-certificates apt-transport-https -y >/dev/null 2>&1
         sudo wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add - >/dev/null 2>&1
         sudo echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php7.list >/dev/null 2>&1
         sudo apt-get update -y >/dev/null 2>&1
-		sudo apt-get install php7.3-fpm php7.3-opcache php7.3-curl php7.3-mbstring php7.3-pgsql php7.3-zip php7.3-xml php7.3-gd php7.3-sqlite3 usbmount git omxplayer python-dbus rng-tools hostapd -y >/dev/null 2>&1
+
+		sudo apt-get install composer git\
+		php7.3-fpm php7.3-opcache php7.3-curl php7.3-mbstring php7.3-pgsql php7.3-zip php7.3-xml php7.3-gd php7.3-sqlite3\
+		usbmount omxplayer python-dbus rng-tools hostapd -y
 
 		sudo sed -i 's|MountFlags=slave|MountFlags=shared|g' /lib/systemd/system/systemd-udevd.service
 
         echo "Setup user environment..."
         setupUser
 
-
-        echo "Installing Composer..."
-        setupComposer
-
         echo "Clean Composer Cache..."
-        clearComposerCache
+        sudo composer clearcache
 
 	    echo "Installing Signalize..."
         setupPackages
@@ -53,28 +52,12 @@ setupUser(){
     fi
 }
 
-setupComposer(){
-    cd /home/signalize
-    if !([ -f "/home/signalize/composer.phar" ]); then
-        sudo su - signalize -c "
-        php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\" &&
-        php -r \"if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;\" &&
-        php composer-setup.php &&
-        php -r \"unlink('composer-setup.php');\"" >/dev/null 2>&1
-    fi
-}
-
-clearComposerCache(){
-		cd /home/signalize
-		sudo su - signalize -c "php composer.phar clearcache" >/dev/null 2>&1
-}
-
 setupPackages(){
     cd /home/signalize
 
     sudo rm -Rf core >/dev/null 2>&1
     sudo su - signalize -c "git clone https://github.com/artistplayer/core.git core" >/dev/null 2>&1
-    sudo su - signalize -c "cd core && php ../composer.phar install"
+    sudo su - signalize -c "cd core && composer install"
     sudo su - signalize -c "cd core && cp .env.example .env"
     sudo su - signalize -c "touch core/database/database.sqlite" >/dev/null 2>&1
     sudo chmod 0777 core/database -Rf >/dev/null 2>&1
