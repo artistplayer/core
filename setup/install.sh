@@ -1,34 +1,34 @@
 #!/usr/bin/env bash
 
 # Create User
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/user.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/user.sh | sh
 
 # Install NGINX Server
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/server.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/server.sh | sh
 
 # Install Composer
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/composer.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/composer.sh | sh
 
 # Install PHP
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/php.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/php.sh | sh
 
 # Install USB Mounting Support
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/usb.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/usb.sh | sh
 
 # Install project
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/project.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/project.sh | sh
 
 # Configure OMX Media player Support
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/omx.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/omx.sh | sh
 
 # Configure Bluetooth Tether Support
-wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh > /dev/null | bash
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh | sh
 
 # Configure Device as Hotspot
-#wget --no-cache -q -O -  https://github.com/artistplayer/core/raw/master/setup/hotspot.sh > /dev/null | bash
+#curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
 
 # Install Raspotify
-curl -sL https://dtcooper.github.io/raspotify/install.sh > /dev/null | sh
+curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
 # Reboot device
 reboot
