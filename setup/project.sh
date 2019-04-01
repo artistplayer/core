@@ -34,6 +34,4 @@ sudo systemctl reload nginx
 
 # Setup Socket Service
 sudo chmod 0777 /home/signalize/core/services/socket.service
-sudo ln -s /home/signalize/core/services/socket.service /etc/systemd/system/signalize-socket.service
-sudo systemctl start signalize-socket
-sudo systemctl enable signalize-socket
+sudo systemctl enable /home/signalize/core/services/socket.service
