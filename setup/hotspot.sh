@@ -2,7 +2,8 @@
 
 sudo apt-get install hostapd dnsmasq -y
 
-sudo echo "
+
+sudo sh -c 'echo "
 source-directory /etc/network/interfaces.d
 
 auto lo
@@ -16,21 +17,17 @@ auto wlan0
 iface wlan0 inet static
 address 192.168.1.1
 netmask 255.255.255.0
-
-" > /etc/network/interfaces
-
+" > /etc/network/interfaces'
 
 isInFile=$(cat /etc/hosts | grep -c "artist.player")
 if [ $isInFile -eq 0 ]; then
-    sudo echo "
-
-    192.168.1.1	artist.player
-
-    " >> /etc/hosts
+    sudo sh -c 'echo "
+192.168.1.1	artist.player
+" >> /etc/hosts'
 fi
 
 
-sudo echo "
+sudo sh -c 'echo "
 interface=wlan0
 driver=nl80211
 ssid=ArtistPlayer
@@ -46,17 +43,20 @@ wpa=2
 wpa_key_mgmt=WPA-PSK
 wpa_passphrase=welcome
 rsn_pairwise=CCMP
-" > /etc/hostapd/hostapd.conf
+" > /etc/hostapd/hostapd.conf'
 
 
-echo "
+
+sudo sh -c 'echo "
     DAEMON_CONF=\"/etc/hostapd/hostapd.conf\"
-" > /etc/default/hostapd
+" > /etc/default/hostapd'
+
 
 
 sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 
-echo "
+
+sudo sh -c 'echo "
 bogus-priv
 server=/player/192.168.1.1
 local=/player/
@@ -67,4 +67,4 @@ dhcp-range=192.168.1.10,192.168.1.254,1h
 dhcp-option=3,192.168.1.1
 dhcp-option=6,192.168.1.1
 dhcp-authoritative
-" > /etc/dnsmasq.conf
+" > /etc/dnsmasq.conf'
