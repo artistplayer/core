@@ -10,7 +10,6 @@ if [ ! -f /home/signalize/core/composer.lock ]; then
 else
     sudo su - signalize -c "cd core && composer update"
 fi
-sudo su - signalize -c "cd core && composer install"
 
 # Config project
 sudo su - signalize -c "cd core && cp .env.example .env"
