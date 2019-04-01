@@ -33,6 +33,6 @@ sudo ln -s /home/signalize/core/signalize.conf /etc/nginx/sites-enabled/default
 sudo systemctl reload nginx
 
 # Setup Socket Service
-sudo ln -s /home/signalize/core/services/socket.service /etc/systemd/system/core/signalize-socket.service
+sudo ln -s /home/signalize/core/services/socket.service /etc/systemd/system/signalize-socket.service
 sudo systemctl start signalize-socket
 sudo systemctl enable signalize-socket
