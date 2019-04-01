@@ -4,15 +4,23 @@
 sudo apt-get install git composer -y
 sudo su - signalize -c "composer clearcache"
 
-if [ ! -f /home/signalize/core/composer.json ]; then
+if [ ! -f /home/signalize/core/composer.lock ]; then
     sudo su - signalize -c "cd /home/signalize && git clone https://github.com/artistplayer/core.git core"
+    sudo su - signalize -c "cd core && composer install"
+else
+    sudo su - signalize -c "cd core && composer update"
 fi
-sudo su - signalize -c "cd core && composer update"
+sudo su - signalize -c "cd core && composer install"
 
 # Config project
 sudo su - signalize -c "cd core && cp .env.example .env"
-sudo chmod 0777 core/database -Rf
-sudo su - signalize -c "touch core/database/database.sqlite"
+
+# Create database, if not exists
+if [ ! -f /home/signalize/database.sqlite ]; then
+    sudo su - signalize -c "touch /home/signalize/database.sqlite"
+    sudo chmod 0777 /home/signalize/database.sqlite
+fi
+
 sudo chmod 0777 core/storage -Rf
 sudo su - signalize -c "cd core && php artisan migrate"
 sudo su - signalize -c "cd core && php artisan storage:link"
