@@ -31,4 +31,4 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
 # Reboot device
-reboot
+sudo reboot
