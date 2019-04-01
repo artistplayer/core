@@ -25,7 +25,7 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh | sh
 
 # Configure Device as Hotspot
-#curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
 
 # Install Raspotify
 curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
