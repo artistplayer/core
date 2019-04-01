@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
+
 # Create User
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/user.sh | sh
 
