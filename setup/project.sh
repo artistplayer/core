@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Unpack project
-sudo apt-get install git composer -y
+sudo apt-get install git -y
 sudo su - signalize -c "composer clearcache"
 
 if [ ! -f /home/signalize/core/composer.lock ]; then

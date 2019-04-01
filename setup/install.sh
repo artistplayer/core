@@ -6,6 +6,9 @@ wget -O -  https://github.com/artistplayer/core/raw/master/setup/user.sh | bash
 # Install NGINX Server
 wget -O -  https://github.com/artistplayer/core/raw/master/setup/server.sh | bash
 
+# Install Composer
+wget -O -  https://github.com/artistplayer/core/raw/master/setup/composer.sh | bash
+
 # Install PHP
 wget -O -  https://github.com/artistplayer/core/raw/master/setup/php.sh | bash
 
