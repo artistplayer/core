@@ -14,6 +14,7 @@ if [ ! -f /home/signalize/core/composer.lock ]; then
     sudo su - signalize -c "cd core && composer install"
 else
     sudo su - signalize -c "composer clearcache"
+    sudo su - signalize -c "cd /home/signalize && git pull"
     sudo su - signalize -c "cd core && composer update"
 fi
 
