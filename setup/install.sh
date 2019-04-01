@@ -8,11 +8,11 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 # Install NGINX Server
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/server.sh | sh
 
-# Install Composer
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/composer.sh | sh
-
 # Install PHP
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/php.sh | sh
+
+# Install Composer
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/composer.sh | sh
 
 # Install USB Mounting Support
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/usb.sh | sh
