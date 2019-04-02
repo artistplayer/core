@@ -21,7 +21,12 @@ class Bluetooth
         });
 
         $this->client->subscribe('bluetooth', function ($data, $sender) { // Listen to messages from a specific channel
-            var_dump($data);
+            if (isset($data['connect'])) {
+                $this->connect($data['connect']);
+            }
+            if (isset($data['disconnect'])) {
+                $this->disconnect($data['disconnect']);
+            }
         });
 
 
@@ -46,6 +51,7 @@ class Bluetooth
 
     private function connect($device)
     {
+        $this->execute("sudo hcitool cc " . $device);
         $this->execute("sudo /home/signalize/core/bin/bt-pan client -r " . $device);
     }
 

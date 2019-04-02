@@ -8,15 +8,9 @@ source-directory /etc/network/interfaces.d
 
 auto lo
 iface lo inet loopback
-
 iface eth0 inet manual
-
-# Start the interface when a "hotplug" event is detected
 allow-hotplug wlan0
-
-# Start the wlan0 interface at boot
 auto wlan0
-# Assign it a static IP address
 iface wlan0 inet static
 address 192.168.1.1
 netmask 255.255.255.0
@@ -32,11 +26,20 @@ fi
 
 sudo sh -c 'echo "
 interface=wlan0
+driver=nl80211
 ssid=ArtistPlayer
 hw_mode=g
 channel=6
+ieee80211n=1
+wmm_enabled=1
+ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
+macaddr_acl=0
 auth_algs=1
-wmm_enabled=0
+ignore_broadcast_ssid=0
+wpa=2
+wpa_key_mgmt=WPA-PSK
+wpa_passphrase=Secr3t!
+rsn_pairwise=CCMP
 " > /etc/hostapd/hostapd.conf'
 
 
@@ -64,5 +67,7 @@ dhcp-authoritative
 " > /etc/dnsmasq.conf'
 
 sudo service networking restart
-sudo service hostapd restart
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd
 sudo service dnsmasq restart
