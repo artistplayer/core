@@ -36,4 +36,4 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 #curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/encrypt.sh | sh
 
 # Reboot device
-sudo reboot
+#sudo reboot
