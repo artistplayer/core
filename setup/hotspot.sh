@@ -47,9 +47,9 @@ wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 
 # Network Name
-ssid=Pi3-AP
+ssid=ArtistPlayer
 # Network password
-wpa_passphrase=raspberry
+wpa_passphrase=welcome
 " > /etc/hostapd/hostapd.conf'
 
 
