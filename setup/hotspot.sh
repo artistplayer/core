@@ -27,18 +27,29 @@ fi
 
 
 sudo sh -c 'echo "
+# WifI interface and driver to be used
 interface=wlan0
+driver=nl80211
+
+# WiFi settings
 hw_mode=g
 channel=6
+ieee80211n=1
 wmm_enabled=1
+ht_capab=[HT40][SHORT-GI-20][DSSS_CCK-40]
 macaddr_acl=0
-auth_algs=1
 ignore_broadcast_ssid=0
+
+# Use WPA authentication and a pre-shared key
+auth_algs=1
 wpa=2
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
-ssid=ArtistPlayer
-wpa_passphrase=welcomeartist
+
+# Network Name
+ssid=Pi3-AP
+# Network password
+wpa_passphrase=raspberry
 " > /etc/hostapd/hostapd.conf'
 
 
