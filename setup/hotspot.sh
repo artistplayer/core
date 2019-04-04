@@ -8,9 +8,11 @@ source-directory /etc/network/interfaces.d
 
 auto lo
 iface lo inet loopback
-iface eth0 inet manual
+
+auto eth0
+iface eth0 inet dhcp
+
 allow-hotplug wlan0
-auto wlan0
 iface wlan0 inet static
 address 192.168.1.1
 netmask 255.255.255.0
