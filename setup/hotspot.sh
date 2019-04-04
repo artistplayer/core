@@ -70,3 +70,4 @@ sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
 sudo systemctl start hostapd
 sudo service dnsmasq restart
+sudo update-rc.d hostapd defaults
