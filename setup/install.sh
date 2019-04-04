@@ -26,14 +26,14 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 # Configure Bluetooth Tether Support
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh | sh
 
-# Configure Device as Hotspot
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
-
 # Install Raspotify
 curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
+# Configure Device as Hotspot
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
+
 # Change pi-password to prevent access over ssh
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/encrypt.sh | sh
+#curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/encrypt.sh | sh
 
 # Reboot device
 sudo reboot
