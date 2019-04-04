@@ -25,7 +25,7 @@ def get_manager():
 	if not manager:
 		manager = get_manager.cached_obj = dbus.Interface(
 			get_bus().get_object(iface_base, '/'),
-			'org.freedesktop.DBus.OhostapdbjectManager' )
+			'org.freedesktop.DBus.ObjectManager' )
 	return manager
 
 def prop_get(obj, k, iface=None):
