@@ -49,7 +49,7 @@ rsn_pairwise=CCMP
 # Network Name
 ssid=ArtistPlayer
 # Network password
-wpa_passphrase=welcome
+wpa_passphrase=welcomeartist
 " > /etc/hostapd/hostapd.conf'
 
 
