@@ -51,6 +51,8 @@ class Bluetooth
 
     private function connect($device)
     {
+        //sudo hcitool cc 64:A2:F9:29:22:F8 && sudo hcitool auth 64:A2:F9:29:22:F8
+//        sudo /home/signalize/core/bin/bt-pan client -r 64:A2:F9:29:22:F8
         $this->execute("sudo hcitool cc " . $device . " && sudo hcitool auth " . $device);
         $this->execute("sudo /home/signalize/core/bin/bt-pan client -r " . $device);
     }

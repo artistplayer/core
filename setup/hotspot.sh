@@ -9,6 +9,9 @@ source-directory /etc/network/interfaces.d
 auto lo
 iface lo inet loopback
 
+auto bnep0
+iface bnep0 inet dhcp
+
 auto eth0
 iface eth0 inet dhcp
 
