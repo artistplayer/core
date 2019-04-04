@@ -32,5 +32,8 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 # Install Raspotify
 curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
+# Change pi-password to prevent access over ssh
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/encrypt.sh | sh
+
 # Reboot device
 sudo reboot
