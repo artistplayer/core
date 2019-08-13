@@ -27,6 +27,15 @@ class Bluetooth
             if (isset($data['disconnect'])) {
                 $this->disconnect($data['disconnect']);
             }
+            if (isset($data['device']) && isset($data['state'])) {
+                $this->setState($data['device'], $data['state']);
+            }
+
+
+        });
+
+        $this->client->every(5, function () {
+            $this->client->publish('bluetooth', $this->scan());
         });
 
 
@@ -36,14 +45,16 @@ class Bluetooth
     private function scan()
     {
         $scan = $this->execute("hcitool scan");
+        $activated = explode(PHP_EOL, $this->execute("---------"));
         $devices = explode(PHP_EOL, substr($scan, strpos($scan, PHP_EOL) + 1));
-        return array_map(function ($data) {
+        return array_map(function ($data) use ($activated) {
             $data = trim($data);
             $address = trim(substr($data, 0, strpos($data, "\t")));
             $label = trim(substr($data, strpos($data, $address) + strlen($address)));
             return [
                 'address' => $address,
-                'label' => $label
+                'label' => $label,
+                'state' => in_array($address, $activated) ? 'active' : 'inactive'
             ];
         }, $devices);
     }
@@ -61,10 +72,38 @@ class Bluetooth
         $this->execute("sudo hcitool dc " . $device);
     }
 
+    private function setState($device, $state)
+    {
+//        $this->execute("");
+    }
+
 
     private function execute($cmd)
     {
+        if ($data = $this->devExecute($cmd)) {
+            return $data;
+        }
+
         @exec($cmd, $response);
         return join(PHP_EOL, $response);
+    }
+
+
+    private function devExecute($cmd)
+    {
+        if (env('APP_DEBUG')) {
+            if ($cmd === 'hcitool scan') {
+                return join(PHP_EOL, [
+                    " 64:A2:F9:29:22:F8\tMaikelOP6"
+                ]);
+            }
+            if ($cmd === '---------') {
+                return join(PHP_EOL, ['64:A2:F9:29:22:F8']);
+            }
+
+
+            return true;
+        }
+        return false;
     }
 }

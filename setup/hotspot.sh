@@ -11,6 +11,7 @@ iface lo inet loopback
 
 auto eth0
 iface eth0 inet dhcp
+iface bnep0 inet dhcp
 
 allow-hotplug wlan0
 iface wlan0 inet static
@@ -64,17 +65,31 @@ sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 
 
 sudo sh -c 'echo "
+domain-needed
 bogus-priv
 server=/player/192.168.1.1
+server=8.8.8.8
 local=/player/
 address=/#/192.168.1.1
 interface=wlan0
+interface=bnep0
 domain=player
 dhcp-range=192.168.1.10,192.168.1.254,1h
 dhcp-option=3,192.168.1.1
 dhcp-option=6,192.168.1.1
 dhcp-authoritative
 " > /etc/dnsmasq.conf'
+
+
+
+sudo sh -c 'echo "
+interface bnep0
+static ip_address=192.168.44.49/24
+static routers=192.168.44.1
+static domain_name_servers=192.168.44.1
+" >> /etc/dhcpcd.conf'
+
+
 
 sudo service networking restart
 sudo systemctl unmask hostapd

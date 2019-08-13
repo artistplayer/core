@@ -40,7 +40,7 @@ class WSClient
                             (!isset($msg->channel) && !isset($listener['channel'])) ||
                             (isset($msg->channel) && isset($listener['channel']) && $msg->channel === $listener['channel'])
                         ) {
-                            $listener['callback']($msg->data, (isset($msg->sender) ? $msg->sender : null));
+                            $listener['callback']((array)$msg->data, (isset($msg->sender) ? $msg->sender : null));
                         }
                     }
                 }
