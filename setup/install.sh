@@ -20,18 +20,6 @@ curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/m
 # Install project
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/project.sh | sh
 
-# Configure OMX Media player Support
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/omx.sh | sh
-
-# Configure Bluetooth Tether Support
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh | sh
-
-# Install Raspotify
-curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
-
-# Configure Device as Hotspot
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
-
 # Change pi-password to prevent access over ssh
 #curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/encrypt.sh | sh
 
