@@ -35,3 +35,17 @@ sudo systemctl reload nginx
 # Setup Socket Service
 sudo chmod 0777 /home/signalize/core/services/signalize-socket.service
 sudo systemctl enable /home/signalize/core/services/signalize-socket.service
+
+# Setup OMX Media player Support
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/omx.sh | sh
+
+# Setup Bluetooth Tether Support
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/bluetooth.sh | sh
+
+# Install Raspotify
+curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
+
+# Configure Device as Hotspot
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hotspot.sh | sh
+
+
