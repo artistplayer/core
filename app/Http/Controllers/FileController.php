@@ -161,7 +161,7 @@ class FileController extends Controller
     {
         $__schema = new \App\Console\Commands\Generator\Schemas\File();
         if (isset($data['filepath']) && isset($data['filename'])) {
-            $file = $data['filepath'] . "/" . $data['filename'];
+            $file = rtrim($data['filepath'], '/') . "/" . $data['filename'];
             if (!file_exists($file)) {
                 abort(400, "The file you requested cannot be found!");
             }

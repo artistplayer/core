@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Socket\Bluetooth;
 use App\Console\Commands\Socket\OMX;
 use App\Console\Commands\Socket\Server;
 
@@ -25,8 +24,7 @@ class Socket extends \Illuminate\Console\Command
 
     private $services = [
         'server' => Server::class,
-        'omx' => OMX::class,
-        'bluetooth' => Bluetooth::class
+        'omx' => OMX::class
     ];
 
     /**

@@ -107,8 +107,9 @@ class File extends Schema
 
     public function processResource(\Illuminate\Http\Request &$request, array &$data): void
     {
+
         if (isset($data['filepath']) && isset($data['filename'])) {
-            $file = $data['filepath'] . "/" . $data['filename'];
+            $file = rtrim($data['filepath'], '/') . "/" . $data['filename'];
             if (!file_exists($file)) {
                 abort(400, "The file you requested cannot be found!");
             }

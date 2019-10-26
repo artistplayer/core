@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Playlist;
 use App\Http\Resources\PlaylistFileResource;
 use App\File;
 use Illuminate\Http\Request;
-
 class PlaylistFileController extends Controller
 {
     /**
@@ -21,14 +18,13 @@ class PlaylistFileController extends Controller
         $order = $request->query->get('order', 'asc');
         $sort = strtolower($request->query->get('sort', 'id'));
         $limit = $request->query->get('limit', 100) ?: 100;
-        if ($limit > 100) {
+        if($limit > 100){
             $limit = 100;
         }
         $reference = Playlist::findOrFail($referenceId);
         $collection = $reference->files()->orderBy($sort, $order)->paginate($limit)->appends($request->query->all());
         return PlaylistFileResource::collection($collection);
     }
-
     /**
      * @param Request $request
      * @param $referenceId
@@ -40,16 +36,15 @@ class PlaylistFileController extends Controller
     {
         $this->authorize('store', Playlist::class);
         $data = $this->validate($request, [
-            'position' => 'integer',
-            'files' => 'array',
-        ]);
+			'position' => 'integer',
+			'files' => 'array',
+		]);
         $data = $this->getData($request, $data, $referenceId);
         $reference = Playlist::findOrFail($referenceId);
         $reference->files()->attach($request->get('files'), $data);
         $attached = $reference->files()->whereIn('file_id', $request->get('files'))->get();
         return PlaylistFileResource::collection($attached);
     }
-
     /**
      * @param $referenceId
      * @param $modelId
@@ -63,7 +58,6 @@ class PlaylistFileController extends Controller
         $this->authorize('show', $model);
         return new PlaylistFileResource($model);
     }
-
     /**
      * @param Request $request
      * @param $referenceId
@@ -78,14 +72,13 @@ class PlaylistFileController extends Controller
         $model = $reference->files()->findOrFail($modelId);
         $this->authorize('update', $model);
         $data = $this->validate($request, [
-            'position' => 'integer',
-        ]);
+			'position' => 'integer',
+		]);
         $data = $this->getData($request, $data, $referenceId, $modelId);
         $reference->files()->updateExistingPivot($modelId, $data);
         $model = $reference->files()->findOrFail($modelId);
         return new PlaylistFileResource($model);
     }
-
     /**
      * @param $referenceId
      * @param $modelId
@@ -100,7 +93,6 @@ class PlaylistFileController extends Controller
         $reference->files()->detach($modelId);
         return response()->json([], 204);
     }
-
     /**
      * @param Request $request
      * @param $referenceId
@@ -114,10 +106,10 @@ class PlaylistFileController extends Controller
             unset($v['id']);
             return [$id, $v];
         }, array_keys($data), $data), 1, 0);
-        Playlist::findOrFail($referenceId)->files()->sync($sync);
+        $reference = Playlist::findOrFail($referenceId);
+        $reference->files()->sync($sync);
         return response()->json([], 204);
     }
-
     /**
      * @param Request $request
      * @param array $data
@@ -133,7 +125,7 @@ class PlaylistFileController extends Controller
             $position = $latest->position + 1;
         }
         $data['position'] = $position;
-        unset($data['files']);
+		unset($data['files']);
         return $data;
     }
 }

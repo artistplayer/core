@@ -98,10 +98,16 @@ class FilePlaylistController extends Controller
      * @param $referenceId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function patch(Request $request, $referenceId)
+    public function sync(Request $request, $referenceId)
     {
-        var_dump($referenceId);
-        var_dump($request->request->all());
+        $data = $request->request->all();
+        $sync = array_column(array_map(function ($k, $v) {
+            $id = $v['id'];
+            unset($v['id']);
+            return [$id, $v];
+        }, array_keys($data), $data), 1, 0);
+        $reference = File::findOrFail($referenceId);
+        $reference->playlists()->sync($sync);
         return response()->json([], 204);
     }
     /**

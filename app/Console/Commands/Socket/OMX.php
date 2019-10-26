@@ -161,17 +161,6 @@ class OMX
 
     private function execute($method, $property, $value = '')
     {
-        if (env('APP_DEBUG')) {
-            if ($method === 'get') {
-                if ($property === 'position') {
-                    return 0;
-                }
-                if ($property === 'status') {
-                    return 'Paused';
-                }
-            }
-            return true;
-        }
         $cmd = "bin/omxcontrols " . $method . " " . $property . " " . $value . ($method === 'set' ? " > /dev/null 2>&1" : "");
         @exec($cmd, $response);
         return join(PHP_EOL, $response);
