@@ -17,25 +17,15 @@ class DeviceController extends Controller
         $this->devices = new Collection();
 
 
-        if (env('APP_DEBUG')) {
-            $drives = [
-                [
-                    'Local (DEBUG)',
-                    dirname(base_path()) . "/Drive/"
-                ]
-            ];
-        } else {
-            exec("lsblk -o label,mountpoint", $drives);
-            $drives = array_filter($drives, function ($drive) {
-                return stripos($drive, '/media');
-            });
+        exec("lsblk -o label,mountpoint", $drives);
+        $drives = array_filter($drives, function ($drive) {
+            return stripos($drive, '/media');
+        });
 
-            $drives = array_map(function ($drive) {
-                $drive = str_replace("  ", " ", $drive);
-                return explode(" ", $drive);
-            }, $drives);
-
-        }
+        $drives = array_map(function ($drive) {
+            $drive = str_replace("  ", " ", $drive);
+            return explode(" ", $drive);
+        }, $drives);
         foreach ($drives as $drive) {
             $list = scandir($drive[1]);
             if (count($list) > 2) {
