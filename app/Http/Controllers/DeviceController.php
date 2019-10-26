@@ -23,11 +23,15 @@ class DeviceController extends Controller
         });
 
         $drives = array_map(function ($drive) {
-            $drive = str_replace("  ", " ", $drive);
-            return explode(" ", $drive);
+            $drive = str_replace("  ", " ", trim($drive));
+            $drive = explode(" ", $drive);
+            if(count($drive) <= 1){
+                array_unshift($drive, "NONAME");
+            }
+            return $drive;
         }, $drives);
         foreach ($drives as $drive) {
-            $list = scandir($drive[1]);
+            $list = @scandir($drive[1]);
             if (count($list) > 2) {
                 $this->devices->add(Device::create([
                     "id" => md5($drive[1]),
