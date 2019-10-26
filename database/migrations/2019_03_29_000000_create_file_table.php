@@ -23,8 +23,8 @@ class CreateFileTable extends Migration
 			$table->string('mime_type', 32);
 			$table->mediumInteger('bitrate');
 			$table->double('playtime', 15, 6);
-			$table->double('trimAtStart', 15, 6);
-			$table->double('trimAtEnd', 15, 6);
+			$table->double('trimAtStart', 15, 6)->default(0.00);
+			$table->double('trimAtEnd', 15, 6)->default(0.00);
 			$table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
