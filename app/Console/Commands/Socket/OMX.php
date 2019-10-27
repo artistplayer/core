@@ -12,9 +12,9 @@ class OMX
     private $cli;
     private $client;
 
-    private $volume = 50;
+    private $volume = 100;
     private $muted = false;
-    private $mode = 'normal';
+    private $mode = 'single';
     /** @var Playlist */
     private $playlist = null;
     /** @var File */
@@ -30,7 +30,7 @@ class OMX
         // Clear all running instances
         chmod("bin/omxcontrols", 0777);
         exec("kill $(ps aux | grep 'omxplayer' | awk '{print $2}')");
-        $this->execute("set", "volume", 0.5);
+        $this->execute("set", "volume", 1);
 
 
         $this->cli = $cli;
