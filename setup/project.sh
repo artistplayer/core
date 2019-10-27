@@ -23,7 +23,7 @@ fi
 sudo su - signalize -c "cd core && cp .env.example .env"
 
 
-sudo chmod 0777 core/storage -Rf
+sudo chmod 0777 /home/signalize/core/storage -Rf
 sudo su - signalize -c "cd core && php artisan migrate"
 sudo su - signalize -c "cd core && php artisan storage:link"
 sudo su - signalize -c "cd core && php artisan optimize"
