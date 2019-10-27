@@ -111,8 +111,11 @@ class OMX
 
     protected function setFile($fileId)
     {
+        $this->execute("set", "stop", "");
+
         $file = File::find($fileId);
         $this->position = 0;
+
 
         $volume = $this->muted ? 0 : $this->volume;
         $source = \Storage::disk('local')->path('public/' . $file->integrity_hash . '/media.' . $file->format);
