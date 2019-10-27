@@ -4,6 +4,7 @@
 if [ ! -f /home/signalize/database.sqlite ]; then
     sudo su - signalize -c "touch /home/signalize/database.sqlite"
     sudo chmod 0777 /home/signalize/database.sqlite
+    sudo chmod 0777 /home/signalize
 fi
 
 # Unpack project
