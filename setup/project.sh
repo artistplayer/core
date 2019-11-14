@@ -37,8 +37,8 @@ sudo systemctl reload nginx
 sudo chmod 0777 /home/signalize/core/services/signalize-socket.service
 sudo systemctl enable /home/signalize/core/services/signalize-socket.service
 
-# Setup OMX Media player Support
-curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/omx.sh | sh
+# Setup MPlayer Media player Support
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/mplayer.sh | sh
 
 # Install HifiBerry DAC
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hifiberry.sh | sh
