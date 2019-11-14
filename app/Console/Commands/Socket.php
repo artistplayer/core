@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Socket\MPlayer;
 use App\Console\Commands\Socket\OMX;
 use App\Console\Commands\Socket\Server;
 
@@ -24,7 +25,8 @@ class Socket extends \Illuminate\Console\Command
 
     private $services = [
         'server' => Server::class,
-        'omx' => OMX::class
+        'omx' => OMX::class,
+        'mplayer' => MPlayer::class
     ];
 
     /**
