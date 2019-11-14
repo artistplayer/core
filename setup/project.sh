@@ -39,3 +39,8 @@ sudo systemctl enable /home/signalize/core/services/signalize-socket.service
 
 # Setup OMX Media player Support
 curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/omx.sh | sh
+
+# Install HifiBerry DAC
+curl -H 'Cache-Control: no-cache' -sL https://github.com/artistplayer/core/raw/master/setup/hifiberry.sh | sh
+
+
