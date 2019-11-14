@@ -1,5 +1,5 @@
 [Unit]
-Description=Signalize Bluetooth Service
+Description=Signalize MPlayer Service
 After=network.target
 StartLimitIntervalSec=0
 [Service]
@@ -8,7 +8,7 @@ Restart=always
 RestartSec=1
 User=signalize
 WorkingDirectory=/home/signalize/core
-ExecStart=/usr/bin/php artisan socket bluetooth
+ExecStart=/usr/bin/php artisan socket mplayer
 
 [Install]
 WantedBy=multi-user.target
