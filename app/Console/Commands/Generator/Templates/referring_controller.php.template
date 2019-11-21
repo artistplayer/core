@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\{{reference}};
 use App\Http\Resources\{{referring}}Resource;
+use App\Http\Resources\{{reference}}Resource;
 use App\{{model}};
 use Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ class {{referring}}Controller extends Controller
     /**
      * @param Request $request
      * @param $referenceId
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -50,11 +51,11 @@ class {{referring}}Controller extends Controller
         $reference = {{reference}}::findOrFail($referenceId);
         $reference->{{collection}}()->attach($request->get('{{collection}}'), $data);
 
-        $attached = $reference->{{collection}}()->whereIn('{{pivot}}', $request->get('{{collection}}'))->get();
+        $reference->load(['{{collection}}']);
 
         {{insertPivot}}
 
-        return {{referring}}Resource::collection($attached);
+        return new {{reference}}Resource($reference);
     }
 
     /**
@@ -115,9 +116,11 @@ class {{referring}}Controller extends Controller
 
         $reference->{{collection}}()->detach($modelId);
 
+        $reference->load(['{{collection}}']);
+
         {{deletePivot}}
 
-        return response()->json([], 204);
+        return new {{reference}}Resource($reference);
     }
 
     /**

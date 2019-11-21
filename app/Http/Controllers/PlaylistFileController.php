@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Playlist;
 use App\Http\Resources\PlaylistFileResource;
+use App\Http\Resources\PlaylistResource;
 use App\File;
 use Illuminate\Http\Request;
 class PlaylistFileController extends Controller
@@ -28,7 +29,7 @@ class PlaylistFileController extends Controller
     /**
      * @param Request $request
      * @param $referenceId
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -42,8 +43,8 @@ class PlaylistFileController extends Controller
         $data = $this->getData($request, $data, $referenceId);
         $reference = Playlist::findOrFail($referenceId);
         $reference->files()->attach($request->get('files'), $data);
-        $attached = $reference->files()->whereIn('file_id', $request->get('files'))->get();
-        return PlaylistFileResource::collection($attached);
+        $reference->load(['files']);
+        return new PlaylistResource($reference);
     }
     /**
      * @param $referenceId
@@ -91,7 +92,8 @@ class PlaylistFileController extends Controller
         $model = $reference->files()->findOrFail($modelId);
         $this->authorize('delete', $model);
         $reference->files()->detach($modelId);
-        return response()->json([], 204);
+        $reference->load(['files']);
+        return new PlaylistResource($reference);
     }
     /**
      * @param Request $request

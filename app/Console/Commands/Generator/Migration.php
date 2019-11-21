@@ -24,7 +24,6 @@ class Migration extends Generator
         foreach ($this->schema->properties as $property => $options) {
             if (isset($options['save']) && !$options['save']) continue;
 
-
             $schema .= "\t\t\t\$table->" . $options['type'] . "('" . $property . "'";
             if (!empty($options['length'])) {
                 $schema .= ", " . $options['length'];

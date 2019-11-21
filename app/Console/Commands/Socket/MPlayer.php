@@ -3,8 +3,11 @@
 namespace App\Console\Commands\Socket;
 
 use App\File;
+use App\Http\Controllers\StatController;
 use App\Libs\WSClient;
 use App\Playlist;
+use App\Services\InternalRequest;
+use App\Stat;
 
 class MPlayer
 {
@@ -36,15 +39,28 @@ class MPlayer
         });
 
 
-        $this->client->every(0.5, function () {
+        $this->client->every(.5, function (WSClient $wsClient) {
             if ($this->state->file && $this->state->status === 'Playing') {
-                $this->state->position += 0.5;
+                $this->state->position += .5;
                 $this->client->publish('mplayer', [
                     'status' => $this->state->status,
                     'position' => $this->state->position,
                 ]);
 
+                // Execute every 30 seconds of playing
+                if ((round($this->state->position) === $this->state->position) && !($this->state->position % 30)) {
+                    try {
+                        InternalRequest::request('/api/v1/stats', 'POST', [
+                            'file_id' => $this->state->file->id,
+                            'playlist_id' => $this->state->playlist ? $this->state->playlist->id : null,
+                            'position' => $this->state->position
+                        ]);
+                    } catch (\Exception $e) {
+                    }
+                }
 
+
+                // Stop on end of playing
                 if ($this->state->position >= $this->state->file->playtime) {
                     $this->reset();
                     $this->client->publish('mplayer', $this->state);
@@ -93,6 +109,12 @@ class MPlayer
 
             $this->state->position = 0;
             $this->state->status = 'Playing';
+
+            $this->client->publish('mplayer', [
+                'status' => $this->state->status,
+                'position' => $this->state->position,
+            ]);
+
             return;
         }
 

@@ -47,6 +47,17 @@ class Playlist extends Schema
 
     public function resourceResponse(\Illuminate\Http\Request &$request, Model &$model, array &$response): void
     {
+        if (isset($response['files'])) {
+            $response['playtime'] = 0;
+            /** @var File $file */
+            foreach ($response['files'] as $file) {
+                $response['playtime'] += $file->playtime;
+            }
+
+            $response['playtime'] = gmdate('i:s', $response['playtime']);
+
+        }
+
     }
 
 

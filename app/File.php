@@ -24,8 +24,6 @@ class File extends ExtendedClass
 		'mime_type' => 'string',
 		'bitrate' => 'integer',
 		'playtime' => 'double',
-		'trimAtStart' => 'double',
-		'trimAtEnd' => 'double',
 		'created_at' => 'datetime',
 		'updated_at' => 'datetime'
 	];

@@ -66,16 +66,6 @@ class File extends Schema
             "type" => "double",
             "length" => 15,
             "places" => 6
-        ],
-        "trimAtStart" => [
-            "type" => "double",
-            "length" => 15,
-            "places" => 6
-        ],
-        "trimAtEnd" => [
-            "type" => "double",
-            "length" => 15,
-            "places" => 6
         ]
     ];
     public $relations = [
@@ -177,6 +167,7 @@ class File extends Schema
             'title' => $response['title'],
             'artist' => $response['artist'],
             'filename' => $response['filename'],
+            'playtime' => $response['playtime'],
             'position' => $response['pivot']['position'],
             'created_at' => $response['pivot']['created_at']
         ];

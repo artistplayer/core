@@ -24,8 +24,9 @@ Route::prefix('v1')->group(function ($router) {
 
         'devices' => 'DeviceController',
 
-        'users' => 'UserController',
+//        'users' => 'UserController',
 
+        'stats' => 'StatController',
         'upload' => 'UploadController'
     ]);
 });

@@ -76,8 +76,6 @@ class FileController extends Controller
 			'mime_type' => 'string',
 			'bitrate' => 'integer',
 			'playtime' => 'numeric',
-			'trimAtStart' => 'numeric',
-			'trimAtEnd' => 'numeric',
 		]);
         $data = $this->getData($request, $data);
         $model = File::create($data);
@@ -130,8 +128,6 @@ class FileController extends Controller
 			'mime_type' => 'string',
 			'bitrate' => 'integer',
 			'playtime' => 'numeric',
-			'trimAtStart' => 'numeric',
-			'trimAtEnd' => 'numeric',
 		]);
         $data = $this->getData($request, $data);
         $model->update($data);

@@ -19,6 +19,7 @@ class PlaylistFileResource extends JsonResource
             'title' => $response['title'],
             'artist' => $response['artist'],
             'filename' => $response['filename'],
+            'playtime' => $response['playtime'],
             'position' => $response['pivot']['position'],
             'created_at' => $response['pivot']['created_at']
         ];

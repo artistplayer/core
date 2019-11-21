@@ -20,6 +20,14 @@ class PlaylistResource extends JsonResource
             unset($response['pivot']['file_id'],$response['pivot']['playlist_id']);
         }
         $__schema = new \App\Console\Commands\Generator\Schemas\Playlist();
+        if (isset($response['files'])) {
+            $response['playtime'] = 0;
+            /** @var File $file */
+            foreach ($response['files'] as $file) {
+                $response['playtime'] += $file->playtime;
+            }
+            $response['playtime'] = gmdate('i:s', $response['playtime']);
+        }
         return $response;
     }
     public function with($request)
