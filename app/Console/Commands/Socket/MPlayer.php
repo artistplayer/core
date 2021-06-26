@@ -160,7 +160,7 @@ class MPlayer
     private function setFX($enabled)
     {
         $path = dirname(dirname(dirname(__DIR__))) . "/Libs/Midi/";
-        exec("aplaymidi --port=20:0 " . $path ($enabled ? 'on' : 'off') . ".mid > /dev/null 2>/dev/null &");
+        exec("aplaymidi --port=20:0 " . $path . ($enabled ? 'on' : 'off') . ".mid > /dev/null 2>/dev/null &");
     }
 }
 
