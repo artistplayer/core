@@ -110,6 +110,8 @@ class MPlayer
             $this->state->position = 0;
             $this->state->status = 'Playing';
 
+            $this->setFX(true);
+
             $this->client->publish('mplayer', [
                 'status' => $this->state->status,
                 'position' => $this->state->position,
@@ -134,6 +136,8 @@ class MPlayer
             fputs($this->instance, "pause\n");
             $this->state->status = $status;
 
+            $this->setFX($status === 'Playing');
+
             $this->client->publish('mplayer', [
                 'status' => $this->state->status,
                 'position' => $this->state->position,
@@ -150,9 +154,12 @@ class MPlayer
             if ($this->state->status === 'Paused') {
                 fputs($this->instance, "pause\n");
             }
-
-
         }
+    }
+
+    private function setFX($enabled)
+    {
+
     }
 }
 
