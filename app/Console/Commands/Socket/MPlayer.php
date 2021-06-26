@@ -162,7 +162,7 @@ class MPlayer
     {
         $path = dirname(dirname(dirname(__DIR__))) . "/Libs/Midi/";
 //        exec("aplaymidi --port=20:0 " . $path . ($enabled ? 'on' : 'off') . ".mid > /dev/null 2>/dev/null &");
-        exec("amidi --port=20:0 --send=" . $path . ($enabled ? 'on' : 'off') . ".syx > /dev/null 2>/dev/null &");
+        exec("amidi --port=hw:1,0,0 --send=" . $path . ($enabled ? 'on' : 'off') . ".syx > /dev/null 2>/dev/null &");
     }
 }
 
