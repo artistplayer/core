@@ -75,6 +75,7 @@ class MPlayer
     private function reset()
     {
         exec("kill $(ps aux | grep 'mplayer -slave' | awk '{print $2}')");
+        $this->setFX(false);
         $this->state = new State();
     }
 
